@@ -1,5 +1,4 @@
 using bookmark_manager.API.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace bookmark_manager.API.Data
