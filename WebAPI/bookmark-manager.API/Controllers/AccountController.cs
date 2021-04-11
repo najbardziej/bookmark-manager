@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace bookmark_manager.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly DataContext _context;
