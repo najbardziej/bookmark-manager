@@ -20,10 +20,6 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
   registerUser(): void{
-    const data = {
-      email: this.registerRequest.username,
-      password: this.registerRequest.password
-    };
-    this.registerService.addUser(data);
+    this.registerService.addUser(this.registerRequest);
   }
 }

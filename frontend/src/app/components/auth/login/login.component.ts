@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginRequest } from './login.request';
+import {LoginService} from '../../../services/auth/login.service';
 
 @Component({
   selector: 'bm-login',
@@ -9,15 +10,17 @@ import { LoginRequest } from './login.request';
 export class LoginComponent implements OnInit {
   loginRequest: LoginRequest;
 
-  constructor() {
+  constructor(private loginService: LoginService) {
     this.loginRequest = {
-      email: '',
+      username: '',
       password: ''
     };
   }
 
   ngOnInit(): void {
   }
-  loginUser(): void{}
+  loginUser(): void{
+    this.loginService.loginUser(this.loginRequest);
+  }
 
 }
