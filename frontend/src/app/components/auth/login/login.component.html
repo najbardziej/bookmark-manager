@@ -1,1 +1,36 @@
-<p>login works!</p>
+<div class = "login-container">
+  <div class = "header">
+    <ul class = "header-items">
+      <li><a href="#">bookmark-manager</a></li>
+      <li><a href="/register">REGISTER</a></li>
+    </ul>
+  </div>
+  <div class="login-form-container">
+    <div class = "login-form">
+      <form>
+        Email
+        <br><input name="email" type="text" required
+                   [(ngModel)]="loginRequest.email"><br>
+        Password
+        <br><input name="password" type="password" required
+                   [(ngModel)]="loginRequest.password"><br>
+        <div class="login-form-down">
+          <div class="login-options">
+            <input type="checkbox" id="remember-me-checkbox" name="remember-me">
+            <label for="remember-me-checkbox">Remember me</label>
+            <br><a href="#">Reset my password</a>
+          </div>
+          <div>
+            <button (click)="loginUser()" class="btn btn-register">Login</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class = "footer">
+    <div class = "year">
+      2021
+    </div>
+  </div>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+// import {RegisterRequest} from './register.request';
 
 @Component({
   selector: 'bm-register',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+  // registerRequest: RegisterRequest;
 
-  constructor() { }
+  constructor() {
+    // this.registerRequest = {
+    //   email: '',
+    //   password: ''
+    // };
+  }
 
   ngOnInit(): void {
   }
-
 }

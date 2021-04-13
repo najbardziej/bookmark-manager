@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginRequest } from './login.request';
 
 @Component({
   selector: 'bm-login',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  loginRequest: LoginRequest;
 
-  constructor() { }
+  constructor() {
+    this.loginRequest = {
+      email: '',
+      password: ''
+    };
+  }
 
   ngOnInit(): void {
   }
+  loginUser(): void{}
 
 }
