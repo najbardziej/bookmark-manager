@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-// import {RegisterRequest} from './register.request';
+import { RegisterRequest } from './register.request';
+import { RegisterService } from '../../../services/auth/register.service';
 
 @Component({
   selector: 'bm-register',
@@ -7,15 +8,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  // registerRequest: RegisterRequest;
+  registerRequest: RegisterRequest;
 
-  constructor() {
-    // this.registerRequest = {
-    //   email: '',
-    //   password: ''
-    // };
+  constructor(private registerService: RegisterService) {
+    this.registerRequest = {
+      username: '',
+      password: ''
+    };
   }
 
   ngOnInit(): void {
+  }
+  registerUser(): void{
+    const data = {
+      email: this.registerRequest.username,
+      password: this.registerRequest.password
+    };
+    this.registerService.addUser(data);
   }
 }

@@ -9,9 +9,11 @@
     <div class = "login-form">
       <form>
         Email
-        <br><input name="email" type="text"><br>
+        <br><input name="email" type="text" required
+                   [(ngModel)]="registerRequest.username"><br>
         Password
-        <br><input name="password" type="password"><br>
+        <br><input name="password" type="password" required
+                   [(ngModel)]="registerRequest.password"><br>
         Confirm Password
         <br><input name="password" type="password"><br>
         <div class="login-form-down">
