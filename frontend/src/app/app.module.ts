@@ -7,9 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import {JwtInterceptor} from './interceptor/JwtInterceptor';
 
 @NgModule({
   declarations: [
@@ -24,13 +23,12 @@ import {JwtInterceptor} from './interceptor/JwtInterceptor';
     IconsModule,
     MDBBootstrapModule.forRoot(),
     NgxWebstorageModule.forRoot(),
-    FormsModule
+    ReactiveFormsModule
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: JwtInterceptor,
-    multi: true
-  }],
-  bootstrap: [AppComponent]
+  providers: [],
+  bootstrap: [AppComponent,
+              LoginComponent,
+              RegisterComponent
+  ]
 })
 export class AppModule { }

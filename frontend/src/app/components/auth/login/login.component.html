@@ -1,36 +1,60 @@
-<div class = "login-container">
-  <div class = "header">
-    <ul class = "header-items">
-      <li><a href="#">bookmark-manager</a></li>
-      <li><a href="/register">REGISTER</a></li>
-    </ul>
-  </div>
-  <div class="login-form-container">
-    <div class = "login-form">
-      <form>
-        Email
-        <br><input name="email" type="text" required
-                   [(ngModel)]="loginRequest.username"><br>
-        Password
-        <br><input name="password" type="password" required
-                   [(ngModel)]="loginRequest.password"><br>
-        <div class="login-form-down">
-          <div class="login-options">
-            <input type="checkbox" id="remember-me-checkbox" name="remember-me">
-            <label for="remember-me-checkbox">Remember me</label>
-            <br><a href="#">Reset my password</a>
-          </div>
-          <div>
-            <button (click)="loginUser()" class="btn btn-register">Login</button>
-          </div>
+<div class="d-flex justify-content-between login-header">
+  <button type="button" mdbBtn color="link">
+    <mdb-icon fas icon="bookmark"></mdb-icon>
+    BOOKMARK MANAGER</button>
+</div>
+<div class="container">
+  <div class="d-flex justify-content-center align-items-center form-container">
+    <form class="text-center border border-light p-5" novalidate (ngSubmit)="loginUser()" [formGroup]="loginForm">
+      <p class="h4 mb-4">Sign in</p>
+      <div class="md-form">
+        <input mdbInput
+               formControlName="loginFormEmail"
+               type="text"
+               id="emailInput"
+               class="form-control"/>
+        <label for="emailInput" class="">Email</label>
+        <mdb-error
+          *ngIf="loginFormEmail?.invalid && (loginFormEmail?.dirty || loginFormEmail?.touched)">
+          <span *ngIf="loginForm.get('loginFormEmail')?.errors?.required">
+            Email is required
+          </span>
+          <span *ngIf="loginForm.get('loginFormEmail')?.errors?.pattern">
+            Incorrect email
+          </span>
+        </mdb-error>
+      </div>
+      <div class="md-form">
+        <input mdbInput
+               formControlName="loginFormPassword"
+               type="text"
+               id="passwordInput"
+               class="form-control">
+        <label for="passwordInput" class="">Password</label>
+        <mdb-error
+          *ngIf="loginFormPassword?.invalid && (loginFormPassword?.dirty || loginFormPassword?.touched)">
+          <span *ngIf="loginForm.get('loginFormPassword')?.errors?.required">
+            Password is required
+          </span>
+          <span *ngIf="loginForm.get('loginFormPassword')?.errors?.minlength">
+            Password must contain at least 6 characters
+          </span>
+        </mdb-error>
+      </div>
+      <div class="d-flex justify-content-around">
+        <div>
+          <mdb-checkbox [default]="true">Remember me</mdb-checkbox>
+          <a href="">Forgot password?</a>
         </div>
-      </form>
-    </div>
+        <button type="button" mdbBtn color="primary" (click)="loginUser()" mdbWavesEffect>SIGN IN</button>
+      </div>
+      <br>
+      <p>Not a member?
+        <a href="/register">Register</a>
+      </p>
+    </form>
   </div>
-
-  <div class = "footer">
-    <div class = "year">
-      2021
-    </div>
-  </div>
+</div>
+<div class="d-flex justify-content-start align-items-end login-footer">
+  <p>2021</p>
 </div>

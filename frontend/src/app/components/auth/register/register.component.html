@@ -1,37 +1,77 @@
-<div class = "login-container">
-  <div class = "header">
-    <ul class = "header-items">
-      <li><a href="#">bookmark-manager</a></li>
-      <li><a href="/signin">SIGN IN</a></li>
-    </ul>
-  </div>
-  <div class="login-form-container">
-    <div class = "login-form">
-      <form>
-        Email
-        <br><input name="email" type="text" required
-                   [(ngModel)]="registerRequest.username"><br>
-        Password
-        <br><input name="password" type="password" required
-                   [(ngModel)]="registerRequest.password"><br>
-        Confirm Password
-        <br><input name="password" type="password"><br>
-        <div class="login-form-down">
-          <div class="login-options">
-            <input type="checkbox" id="remember-me-checkbox" name="remember-me">
-            <label for="remember-me-checkbox">I accept <a href="#">terms of use</a></label>
-          </div>
-          <div>
-            <button class="btn btn-register">Register</button>
-          </div>
+<div class="d-flex justify-content-between login-header">
+  <button type="button" mdbBtn color="link">
+    <mdb-icon fas icon="bookmark"></mdb-icon>
+    BOOKMARK MANAGER</button>
+</div>
+<div class="container">
+  <div class="d-flex justify-content-center align-items-center register-form-container">
+    <form class="text-center border border-light p-5" novalidate (ngSubmit)="registerUser()" [formGroup]="registerForm">
+      <p class="h4 mb-4">Sign up</p>
+      <div class="md-form">
+        <input mdbInput
+               formControlName="registerFormEmail"
+               type="text"
+               id="emailInput"
+               class="form-control"/>
+        <label for="emailInput" class="">Email</label>
+        <mdb-error
+          *ngIf="registerFormEmail?.invalid && (registerFormEmail?.dirty || registerFormEmail?.touched)">
+          <span *ngIf="registerForm.get('registerFormEmail')?.errors?.required">
+            Email is required
+          </span>
+          <span *ngIf="registerForm.get('registerFormEmail')?.errors?.email">
+            Incorrect email
+          </span>
+        </mdb-error>
+      </div>
+      <div class="md-form">
+        <input mdbInput
+               formControlName="registerFormPassword"
+               type="text"
+               id="passwordInput"
+               class="form-control">
+        <label for="passwordInput" class="">Password</label>
+        <mdb-error
+          *ngIf="registerFormPassword?.invalid && (registerFormPassword?.dirty || registerFormPassword?.touched)">
+          <span *ngIf="registerForm.get('registerFormPassword')?.errors?.required">
+            Password is required
+          </span>
+          <span *ngIf="registerForm.get('registerFormPassword')?.errors?.minlength">
+            Password must contain at least 6 characters
+          </span>
+        </mdb-error>
+      </div>
+      <div class="md-form">
+        <input mdbInput
+               formControlName="registerFormPasswordConfirmation"
+               type="text"
+               id="retypePasswordInput"
+               class="form-control">
+        <label for="retypePasswordInput" class="">Confirm Password</label>
+                <mdb-error
+                  *ngIf="registerFormPasswordConfirmation?.invalid && (registerFormPasswordConfirmation?.dirty
+                  || registerFormPasswordConfirmation?.touched)">
+                  <span *ngIf="registerForm.get('registerFormPasswordConfirmation')?.errors?.required">
+                    Confirm password
+                  </span>
+                  <span *ngIf="registerForm.get('registerFormPasswordConfirmation')?.errors?.minlength">
+                    Password must contain at least 6 characters
+                  </span>
+                </mdb-error>
+      </div>
+      <div class="d-flex justify-content-around">
+        <div>
+          <mdb-checkbox [default]="true">I accept the Terms of Service</mdb-checkbox>
         </div>
-      </form>
-    </div>
+        <button type="button" mdbBtn color="primary" (click)="registerUser()" mdbWavesEffect>SIGN IN</button>
+      </div>
+      <br>
+      <p>Already have an account?
+        <br><a href="/signin">Click here to sign in</a>
+      </p>
+    </form>
   </div>
-
-  <div class = "footer">
-    <div class = "year">
-      2021
-    </div>
-  </div>
+</div>
+<div class="d-flex justify-content-start align-items-end register-footer">
+  <p>2021</p>
 </div>

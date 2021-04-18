@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginRequest } from './login.request';
-import {LoginService} from '../../../services/auth/login.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { User } from '../../../model/user';
+import {AuthService} from '../../../services/auth.service';
 
 @Component({
   selector: 'bm-login',
@@ -8,10 +9,20 @@ import {LoginService} from '../../../services/auth/login.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginRequest: LoginRequest;
+  user: User;
+  loginForm = this.fb.group({
+    loginFormEmail: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+    loginFormPassword: ['', [Validators.required, Validators.minLength(6)]],
+  });
+  get loginFormEmail(){
+    return this.loginForm.get('loginFormEmail');
+  }
+  get loginFormPassword(){
+    return this.loginForm.get('loginFormPassword');
+  }
 
-  constructor(private loginService: LoginService) {
-    this.loginRequest = {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
+    this.user = {
       username: '',
       password: ''
     };
@@ -20,7 +31,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
   loginUser(): void{
-    this.loginService.loginUser(this.loginRequest);
+    this.user.username = this.loginForm.get('loginFormEmail')?.value;
+    this.user.password = this.loginForm.get('loginFormPassword')?.value;
+    this.authService.login(this.user)
+      .subscribe(data => {
+        console.log('Successful');
+      });
   }
 
 }
