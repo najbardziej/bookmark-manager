@@ -46,6 +46,7 @@ namespace bookmark_manager.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
 
             app.UseHttpsRedirection();
 
