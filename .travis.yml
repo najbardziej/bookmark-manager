@@ -1,4 +1,4 @@
-jobs: 
+jobs:
   include:
     - stage: "Build"
       name: "Build WebAPI"
@@ -9,32 +9,59 @@ jobs:
       solution: bookmark-manager.sln
 
       before_install:
-      - cd WebAPI/bookmark-manager.API
+        - cd WebAPI/bookmark-manager.API
 
       install:
-      - dotnet restore
+        - dotnet restore
 
       script:
-      - dotnet publish --configuration Release --runtime win-x64 /p:PublishSingleFile=true --output win-x64
-      - dotnet publish --configuration Release --runtime win-x86 /p:PublishSingleFile=true --output win-x86
-      - dotnet publish --configuration Release --runtime linux-x64 /p:PublishSingleFile=true --output linux-x64
-      - dotnet publish --configuration Release --runtime osx-x64 /p:PublishSingleFile=true --output osx-x64
+        - dotnet publish --configuration Release --runtime win-x64 /p:PublishSingleFile=true --output win-x64
+        - dotnet publish --configuration Release --runtime win-x86 /p:PublishSingleFile=true --output win-x86
+        - dotnet publish --configuration Release --runtime linux-x64 /p:PublishSingleFile=true --output linux-x64
+        - dotnet publish --configuration Release --runtime osx-x64 /p:PublishSingleFile=true --output osx-x64
 
       before_deploy:
-      - zip -r9 win-x64.zip win-x64
-      - zip -r9 win-x86.zip win-x86
-      - zip -r9 linux-x64.zip linux-x64
-      - zip -r9 osx-x64.zip osx-x64
+        - zip -r9 win-x64.zip win-x64
+        - zip -r9 win-x86.zip win-x86
+        - zip -r9 linux-x64.zip linux-x64
+        - zip -r9 osx-x64.zip osx-x64
 
       deploy:
       provider: releases
       api_key: $api_key
       file:
-      - win-x64.zip
-      - win-x86.zip
-      - linux-x64.zip
-      - osx-x64.zip
+        - win-x64.zip
+        - win-x86.zip
+        - linux-x64.zip
+        - osx-x64.zip
       skip_cleanup: true
       on:
       tags: true
-            
+    - stage: "Frontend"
+      name: "Build frontend"
+      language: node_js
+      node_js:
+        - '14'
+
+      addons:
+        chrome: stable
+        apt:
+          sources:
+            - google-chrome
+          packages:
+            - dpkg
+            - google-chrome-stable
+
+      before_install:
+        - cd frontend
+        - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+
+      cache:
+        directories:
+          - ./frontend/node_modules
+
+      install:
+        - npm install
+
+      script:
+        - npm run test -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
