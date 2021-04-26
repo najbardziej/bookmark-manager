@@ -35,8 +35,8 @@
                [ngClass]="{'is-invalid' : registerForm.get('password').errors && registerForm.get('password').touched}">
         <label for="passwordInput" class="">Password</label>
         <mdb-error
-          *ngIf="registerForm.get('passwordConf').invalid && (registerForm.get('passwordConf').dirty ||
-          registerForm.get('passwordConf').touched)">
+          *ngIf="registerForm.get('password').invalid && (registerForm.get('password').dirty ||
+          registerForm.get('password').touched)">
           <span *ngIf="registerForm.get('password').errors.required">
             Password is required
           </span>
@@ -55,14 +55,11 @@
           <mdb-error
             *ngIf="registerForm.get('passwordConf').invalid && (registerForm.get('passwordConf').dirty
             || registerForm.get('passwordConf').touched)">
-            <span *ngIf="registerForm.get('passwordConf').errors?.required">
-              Confirm password
-            </span>
           </mdb-error>
         <mdb-error>
           <span *ngIf="registerForm.hasError('mismatch')">
               Password not match
-            </span>
+          </span>
         </mdb-error>
       </div>
       <div class="d-flex justify-content-around">
