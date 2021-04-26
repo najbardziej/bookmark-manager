@@ -13,22 +13,13 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   constructor(private fb: FormBuilder, private authService: AuthService) {
   }
-  get username() {
-    return this.registerForm.get('username');
-  }
-  get password() {
-    return this.registerForm.get('password');
-  }
-  get passwordConf(){
-    return this.registerForm.get('passwordConf');
-  }
   ngOnInit(): void {
     this.createRegisterForm();
   }
   private createRegisterForm(): void{
     this.registerForm = this.fb.group({
       username: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       passwordConf: ['', Validators.required]
     }, {validators: this.passwordMatchValidator});
   }

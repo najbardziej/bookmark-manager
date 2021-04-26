@@ -16,7 +16,8 @@
                [ngClass]="{'is-invalid' : loginForm.get('username').errors && loginForm.get('username').touched}">
         <label for="emailInput" class="">Email</label>
         <mdb-error
-          *ngIf="username?.invalid && (username?.dirty || username?.touched)">
+          *ngIf="loginForm.get('username').invalid && (loginForm.get('username').dirty
+          || loginForm.get('username').touched)">
           <span *ngIf="loginForm.get('username')?.errors?.required">
             Email is required
           </span>
@@ -34,12 +35,13 @@
                [ngClass]="{'is-invalid' : loginForm.get('password').errors && loginForm.get('password').touched}">
         <label for="passwordInput" class="">Password</label>
         <mdb-error
-          *ngIf="password?.invalid && (password?.dirty || password?.touched)">
-          <span *ngIf="loginForm.get('password')?.errors?.required">
+          *ngIf="loginForm.get('password').invalid && (loginForm.get('password').dirty
+          || loginForm.get('password').touched)">
+          <span *ngIf="loginForm.get('password').errors.required">
             Password is required
           </span>
-          <span *ngIf="loginForm.get('password')?.errors?.minlength">
-            Password must contain at least 6 characters
+          <span *ngIf="loginForm.get('password').errors.minlength">
+            Password must contain at least 8 characters
           </span>
         </mdb-error>
       </div>
@@ -48,7 +50,8 @@
           <mdb-checkbox [default]="true">Remember me</mdb-checkbox>
           <a href="">Forgot password?</a>
         </div>
-        <button type="button" mdbBtn color="primary" (click)="loginUser()" mdbWavesEffect>SIGN IN</button>
+        <button [disabled]="!loginForm.valid" type="button" mdbBtn color="primary"
+                (click)="loginUser()" mdbWavesEffect>SIGN IN</button>
       </div>
       <br>
       <p>Not a member?

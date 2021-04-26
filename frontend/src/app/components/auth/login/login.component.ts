@@ -11,12 +11,6 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginComponent implements OnInit {
   user: User;
   loginForm: FormGroup;
-  get username(){
-    return this.loginForm.get('username');
-  }
-  get password(){
-    return this.loginForm.get('password');
-  }
   constructor(private fb: FormBuilder, private authService: AuthService) {
   }
   ngOnInit(): void {
@@ -32,7 +26,7 @@ export class LoginComponent implements OnInit {
   private createLoginForm(): void{
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 }
