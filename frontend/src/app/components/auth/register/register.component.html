@@ -1,0 +1,80 @@
+<div class="d-flex justify-content-between login-header">
+  <button type="button" mdbBtn color="link">
+    <mdb-icon fas icon="bookmark"></mdb-icon>
+    BOOKMARK MANAGER</button>
+</div>
+<div class="container">
+  <div class="d-flex justify-content-center align-items-center register-form-container">
+    <form class="text-center border border-light p-5" novalidate (ngSubmit)="registerUser()" [formGroup]="registerForm">
+      <p class="h4 mb-4">Sign up</p>
+      <div class="md-form">
+        <input mdbInput
+               formControlName="username"
+               type="text"
+               id="emailInput"
+               class="form-control"
+               [ngClass]="{'is-invalid' : registerForm.get('username').errors && registerForm.get('username').touched}">
+        <label for="emailInput" class="">Email</label>
+        <mdb-error
+          *ngIf="registerForm.get('username').invalid && (registerForm.get('username').dirty
+          || registerForm.get('username').touched)">
+          <span *ngIf="registerForm.get('username').errors.required">
+            Email is required
+          </span>
+          <span *ngIf="registerForm.get('username').errors.email">
+            Incorrect email
+          </span>
+        </mdb-error>
+      </div>
+      <div class="md-form">
+        <input mdbInput
+               formControlName="password"
+               type="password"
+               id="passwordInput"
+               class="form-control"
+               [ngClass]="{'is-invalid' : registerForm.get('password').errors && registerForm.get('password').touched}">
+        <label for="passwordInput" class="">Password</label>
+        <mdb-error
+          *ngIf="registerForm.get('password').invalid && (registerForm.get('password').dirty ||
+          registerForm.get('password').touched)">
+          <span *ngIf="registerForm.get('password').errors.required">
+            Password is required
+          </span>
+          <span *ngIf="registerForm.get('password').errors.minlength">
+            Password must contain at least 8 characters
+          </span>
+        </mdb-error>
+      </div>
+      <div class="md-form">
+        <input mdbInput
+               formControlName="passwordConf"
+               type="password"
+               id="retypePasswordInput"
+               class="form-control">
+        <label for="retypePasswordInput" class="">Confirm Password</label>
+          <mdb-error
+            *ngIf="registerForm.get('passwordConf').invalid && (registerForm.get('passwordConf').dirty
+            || registerForm.get('passwordConf').touched)">
+          </mdb-error>
+        <mdb-error>
+          <span *ngIf="registerForm.hasError('mismatch')">
+              Password not match
+          </span>
+        </mdb-error>
+      </div>
+      <div class="d-flex justify-content-around">
+        <div>
+          <mdb-checkbox [default]="true">I accept the Terms of Service</mdb-checkbox>
+        </div>
+        <button [disabled]="!registerForm.valid" type="button" mdbBtn color="primary" (click)="registerUser()" mdbWavesEffect>SIGN IN</button>
+      </div>
+      <br>
+      <p>Already have an account?
+        <br><a href="/signin">Click here to sign in</a>
+      </p>
+    </form>
+  </div>
+</div>
+<div class="d-flex justify-content-start align-items-end register-footer">
+  <p>2021</p>
+</div>
