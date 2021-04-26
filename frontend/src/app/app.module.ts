@@ -7,7 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 
 @NgModule({
@@ -16,6 +17,9 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
     LoginComponent,
     RegisterComponent
   ],
+  schemas: [
+    NO_ERRORS_SCHEMA
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -23,7 +27,8 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
     IconsModule,
     MDBBootstrapModule.forRoot(),
     NgxWebstorageModule.forRoot(),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent,

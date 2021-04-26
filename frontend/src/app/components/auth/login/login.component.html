@@ -9,34 +9,36 @@
       <p class="h4 mb-4">Sign in</p>
       <div class="md-form">
         <input mdbInput
-               formControlName="loginFormEmail"
+               formControlName="username"
                type="text"
                id="emailInput"
-               class="form-control"/>
+               class="form-control"
+               [ngClass]="{'is-invalid' : loginForm.get('username').errors && loginForm.get('username').touched}">
         <label for="emailInput" class="">Email</label>
         <mdb-error
-          *ngIf="loginFormEmail?.invalid && (loginFormEmail?.dirty || loginFormEmail?.touched)">
-          <span *ngIf="loginForm.get('loginFormEmail')?.errors?.required">
+          *ngIf="username?.invalid && (username?.dirty || username?.touched)">
+          <span *ngIf="loginForm.get('username')?.errors?.required">
             Email is required
           </span>
-          <span *ngIf="loginForm.get('loginFormEmail')?.errors?.pattern">
+          <span *ngIf="loginForm.get('username')?.errors?.pattern">
             Incorrect email
           </span>
         </mdb-error>
       </div>
       <div class="md-form">
         <input mdbInput
-               formControlName="loginFormPassword"
+               formControlName="password"
                type="password"
                id="passwordInput"
-               class="form-control">
+               class="form-control"
+               [ngClass]="{'is-invalid' : loginForm.get('password').errors && loginForm.get('password').touched}">
         <label for="passwordInput" class="">Password</label>
         <mdb-error
-          *ngIf="loginFormPassword?.invalid && (loginFormPassword?.dirty || loginFormPassword?.touched)">
-          <span *ngIf="loginForm.get('loginFormPassword')?.errors?.required">
+          *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+          <span *ngIf="loginForm.get('password')?.errors?.required">
             Password is required
           </span>
-          <span *ngIf="loginForm.get('loginFormPassword')?.errors?.minlength">
+          <span *ngIf="loginForm.get('password')?.errors?.minlength">
             Password must contain at least 6 characters
           </span>
         </mdb-error>

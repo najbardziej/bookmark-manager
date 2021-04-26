@@ -9,55 +9,62 @@
       <p class="h4 mb-4">Sign up</p>
       <div class="md-form">
         <input mdbInput
-               formControlName="registerFormEmail"
+               formControlName="username"
                type="text"
                id="emailInput"
-               class="form-control"/>
+               class="form-control"
+               [ngClass]="{'is-invalid' : registerForm.get('username').errors && registerForm.get('username').touched}">
         <label for="emailInput" class="">Email</label>
         <mdb-error
-          *ngIf="registerFormEmail?.invalid && (registerFormEmail?.dirty || registerFormEmail?.touched)">
-          <span *ngIf="registerForm.get('registerFormEmail')?.errors?.required">
+          *ngIf="username?.invalid && (username?.dirty || username?.touched)">
+          <span *ngIf="registerForm.get('username')?.errors?.required">
             Email is required
           </span>
-          <span *ngIf="registerForm.get('registerFormEmail')?.errors?.email">
+          <span *ngIf="registerForm.get('username')?.errors?.email">
             Incorrect email
           </span>
         </mdb-error>
       </div>
       <div class="md-form">
         <input mdbInput
-               formControlName="registerFormPassword"
+               formControlName="password"
                type="password"
                id="passwordInput"
-               class="form-control">
+               class="form-control"
+               [ngClass]="{'is-invalid' : registerForm.get('password').errors && registerForm.get('password').touched}">
         <label for="passwordInput" class="">Password</label>
         <mdb-error
-          *ngIf="registerFormPassword?.invalid && (registerFormPassword?.dirty || registerFormPassword?.touched)">
-          <span *ngIf="registerForm.get('registerFormPassword')?.errors?.required">
+          *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+          <span *ngIf="registerForm.get('password')?.errors?.required">
             Password is required
           </span>
-          <span *ngIf="registerForm.get('registerFormPassword')?.errors?.minlength">
+          <span *ngIf="registerForm.get('password')?.errors?.minlength">
             Password must contain at least 6 characters
+          </span>
+          <span *ngIf="registerForm.get('password')?.errors?.passwordMatchValidator">
+            Password not match
           </span>
         </mdb-error>
       </div>
       <div class="md-form">
         <input mdbInput
-               formControlName="registerFormPasswordConfirmation"
+               formControlName="passwordConf"
                type="password"
                id="retypePasswordInput"
                class="form-control">
         <label for="retypePasswordInput" class="">Confirm Password</label>
-                <mdb-error
-                  *ngIf="registerFormPasswordConfirmation?.invalid && (registerFormPasswordConfirmation?.dirty
-                  || registerFormPasswordConfirmation?.touched)">
-                  <span *ngIf="registerForm.get('registerFormPasswordConfirmation')?.errors?.required">
-                    Confirm password
-                  </span>
-                  <span *ngIf="registerForm.get('registerFormPasswordConfirmation')?.errors?.minlength">
-                    Password must contain at least 6 characters
-                  </span>
-                </mdb-error>
+          <mdb-error
+            *ngIf="passwordConf?.invalid && (passwordConf?.dirty
+            || passwordConf?.touched)">
+            <span *ngIf="registerForm.get('passwordConf')?.errors?.required">
+              Confirm password
+            </span>
+          </mdb-error>
+        <mdb-error>
+          <span *ngIf="registerForm.hasError('mismatch')">
+              Password not match
+            </span>
+        </mdb-error>
       </div>
       <div class="d-flex justify-content-around">
         <div>

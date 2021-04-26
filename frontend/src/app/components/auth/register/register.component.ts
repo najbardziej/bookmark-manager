@@ -1,19 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Validators, FormBuilder, AbstractControl, FormGroup} from '@angular/forms';
+import {Validators, FormBuilder, FormGroup} from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../model/user';
 
-function passwordMatcher(c: AbstractControl): { [key: string]: boolean} | null {
-  const passwordField = c.get('registerFormPassword');
-  const confField = c.get('registerFormPasswordConfirmation');
-  if (passwordField?.pristine || confField?.pristine) {
-    return null;
-  }
-  if (passwordField?.value === confField?.value){
-    return null;
-  }
-  return { match: true };
-}
 @Component({
   selector: 'bm-register',
   templateUrl: './register.component.html',
@@ -22,29 +11,26 @@ function passwordMatcher(c: AbstractControl): { [key: string]: boolean} | null {
 export class RegisterComponent implements OnInit {
   user: User;
   registerForm: FormGroup;
-  passwordGroup!: FormGroup;
   constructor(private fb: FormBuilder, private authService: AuthService) {
-    this.user = {
-      username: '',
-      password: ''
-    };
-    this.registerForm = this.fb.group({
-      registerFormEmail: ['', [Validators.required, Validators.email]],
-        registerFormPassword: ['', [Validators.required, Validators.minLength(6)]],
-        registerFormPasswordConfirmation: ['', Validators.required]
-    });
   }
-  get registerFormEmail() {
-    return this.registerForm.get('registerFormEmail');
+  get username() {
+    return this.registerForm.get('username');
   }
-  get registerFormPassword() {
-    return this.registerForm.get('registerFormPassword');
+  get password() {
+    return this.registerForm.get('password');
   }
-  get registerFormPasswordConfirmation(){
-    return this.registerForm.get('registerFormPasswordConfirmation');
+  get passwordConf(){
+    return this.registerForm.get('passwordConf');
   }
-
   ngOnInit(): void {
+    this.createRegisterForm();
+  }
+  private createRegisterForm(): void{
+    this.registerForm = this.fb.group({
+      username: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      passwordConf: ['', Validators.required]
+    }, {validators: this.passwordMatchValidator});
   }
   registerUser(): void{
     this.user = Object.assign({}, this.registerForm.value);
@@ -52,5 +38,8 @@ export class RegisterComponent implements OnInit {
       .subscribe(data => {
         console.log('Successful');
       });
+  }
+  passwordMatchValidator(fg: FormGroup): { [key: string]: boolean} | null{
+    return fg.get('password').value === fg.get('passwordConf').value ? null : { 'mismatch' : true};
   }
 }
