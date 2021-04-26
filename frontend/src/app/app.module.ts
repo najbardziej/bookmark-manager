@@ -10,6 +10,8 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgxWebstorageModule } from 'ngx-webstorage';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,13 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
     MDBBootstrapModule.forRoot(),
     NgxWebstorageModule.forRoot(),
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent,
