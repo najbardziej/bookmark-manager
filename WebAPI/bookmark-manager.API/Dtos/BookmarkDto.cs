@@ -6,9 +6,11 @@ namespace bookmark_manager.API.Dtos
     {
         [Required]
         [MinLength(1)]
-        public string BookmarkTitle { get; set; }
+        public string Title { get; set; }
         [Required]
-        public string BookmarkBody { get; set; }
+        public string Content { get; set; }
+        [Required]
+        public string Url { get; set; }
         [Required]
         public int UserId { get; set; }
     }

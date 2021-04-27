@@ -16,7 +16,8 @@ namespace bookmark_manager.API.Data
         {
             modelBuilder.Entity<Bookmark>()
                 .HasOne(p => p.User)
-                .WithMany(b => b.Bookmarks);
+                .WithMany(b => b.Bookmarks)
+                .HasForeignKey(p => p.UserId);
         }
     }
 }
