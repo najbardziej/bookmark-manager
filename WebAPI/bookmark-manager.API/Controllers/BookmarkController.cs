@@ -120,7 +120,7 @@ namespace bookmark_manager.API.Controllers
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var bookmark = _context.Bookmarks.SingleOrDefault(x => x.BookmarkId == id);
+            var bookmark = await _context.Bookmarks.SingleOrDefaultAsync(x => x.BookmarkId == id);
 
             if (bookmark == null)
                 return BadRequest("Invalid bookmark ID");
