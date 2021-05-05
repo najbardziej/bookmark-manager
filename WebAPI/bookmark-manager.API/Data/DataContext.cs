@@ -10,5 +10,14 @@ namespace bookmark_manager.API.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Bookmark> Bookmarks { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Bookmark>()
+                .HasOne(p => p.User)
+                .WithMany(b => b.Bookmarks)
+                .HasForeignKey(p => p.UserId);
+        }
     }
 }
