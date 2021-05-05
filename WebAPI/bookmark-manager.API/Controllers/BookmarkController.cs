@@ -36,11 +36,7 @@ namespace bookmark_manager.API.Controllers
 
             var bookmarks = await _context.Bookmarks.Include(b => b.User).Where(b => b.UserId == userId).ToListAsync();
 
-            if(bookmarks == null)
-                return NoContent();
-
-            var bookmarksToReturn = _mapper.Map<List<BookmarkDto>>(bookmarks);
-            return Ok(bookmarksToReturn);
+            return bookmarks == null ? NoContent() : Ok(_mapper.Map<List<BookmarkDto>>(bookmarks));
         }
 
 
@@ -53,12 +49,7 @@ namespace bookmark_manager.API.Controllers
 
             var bookmark = await _context.Bookmarks.Include(x => x.User).SingleOrDefaultAsync(x => x.BookmarkId == id);
 
-            if (bookmark == null)
-                return NoContent();
-
-            var bookmarkToReturn = _mapper.Map<BookmarkDto>(bookmark);
-
-            return Ok(bookmarkToReturn);
+            return bookmark == null ? NoContent() : Ok(_mapper.Map<BookmarkDto>(bookmark));
         }
 
         // POST: bookmark/{userId}
