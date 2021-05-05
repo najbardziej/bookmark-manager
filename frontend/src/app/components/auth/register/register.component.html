@@ -9,19 +9,19 @@
       <p class="h4 mb-4">Sign up</p>
       <div class="md-form">
         <input mdbInput
-               formControlName="username"
+               formControlName="email"
                type="text"
                id="emailInput"
                class="form-control"
-               [ngClass]="{'is-invalid' : registerForm.get('username').errors && registerForm.get('username').touched}">
+               [ngClass]="{'is-invalid' : registerForm.get('email').errors && registerForm.get('email').touched}">
         <label for="emailInput" class="">Email</label>
         <mdb-error
-          *ngIf="registerForm.get('username').invalid && (registerForm.get('username').dirty
-          || registerForm.get('username').touched)">
-          <span *ngIf="registerForm.get('username').errors.required">
+          *ngIf="registerForm.get('email').invalid && (registerForm.get('email').dirty
+          || registerForm.get('email').touched)">
+          <span *ngIf="registerForm.get('email').errors.required">
             Email is required
           </span>
-          <span *ngIf="registerForm.get('username').errors.email">
+          <span *ngIf="registerForm.get('email').errors.email">
             Incorrect email
           </span>
         </mdb-error>
