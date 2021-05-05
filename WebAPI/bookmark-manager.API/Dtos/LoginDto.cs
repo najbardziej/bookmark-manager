@@ -5,7 +5,8 @@ namespace bookmark_manager.API.Dtos
     public class LoginDto
     {
         [Required]
-        public string UserName { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
         [Required]
         [MinLength(8)]
         public string Password { get; set; }
