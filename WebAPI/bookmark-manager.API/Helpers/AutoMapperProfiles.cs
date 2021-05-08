@@ -11,6 +11,8 @@ namespace bookmark_manager.API.Helpers
             CreateMap<User, RegisterDto>().ReverseMap();
             CreateMap<User, LoginDto>().ReverseMap();
             CreateMap<Bookmark, BookmarkDto>().ReverseMap();
+            CreateMap<CategoryDto, Category>()
+            .ReverseMap();
         }
     }
 }
