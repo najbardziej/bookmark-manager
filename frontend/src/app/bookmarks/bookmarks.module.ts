@@ -11,15 +11,15 @@ import { FolderListComponent } from './sidebar/folder-list/folder-list.component
 import { TagListComponent } from './sidebar/tag-list/tag-list.component';
 
 @NgModule({
-    declarations: [
-        BookmarksComponent,
-        BookmarksListComponent,
-        BookmarkComponent,
-        ConvertUrlToDomainPipe,
-        SidebarComponent,
-        FolderListComponent,
-        TagListComponent,
-    ],
+  declarations: [
+    BookmarksComponent,
+    BookmarksListComponent,
+    BookmarkComponent,
+    ConvertUrlToDomainPipe,
+    SidebarComponent,
+    FolderListComponent,
+    TagListComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild([
