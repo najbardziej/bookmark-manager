@@ -1,0 +1,29 @@
+[
+  {
+    "title": "ClickUp™ | One app to replace them all",
+    "content": "Short note for link",
+    "url": "https://example.com/click_up",
+    "userId": 1,
+    "tags": [
+      {
+        "name": "Study Project"
+      },
+      {
+        "name": "Other"
+      }
+    ],
+    "addedAt": "2021-01-01 00:00:00"
+  },
+  {
+    "title": "PhpStorm: The Lightning-Smart IDE for PHP Programming by JetBrains",
+    "content": "Short note for link",
+    "url": "https://example.com/php_storm",
+    "userId": 1,
+    "tags": [
+      {
+        "name": "Other"
+      }
+    ],
+    "addedAt": "2021-01-01 00:00:00"
+  }
+]
