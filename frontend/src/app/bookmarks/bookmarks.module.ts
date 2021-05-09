@@ -7,8 +7,8 @@ import { BookmarksListComponent } from './bookmarks-list/bookmarks-list.componen
 import { BookmarkComponent } from './bookmarks-list/bookmark/bookmark.component';
 import { ConvertUrlToDomainPipe } from './bookmarks-list/convert-url-to-domain.pipe';
 import { SidebarComponent } from './sidebar/sidebar.component';
-// import { FolderListComponent } from './sidebar/folder-list/folder-list.component';
-// import { TagListComponent } from './sidebar/tag-list/tag-list.component';
+import { FolderListComponent } from './sidebar/folder-list/folder-list.component';
+import { TagListComponent } from './sidebar/tag-list/tag-list.component';
 
 @NgModule({
     declarations: [
@@ -17,8 +17,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
         BookmarkComponent,
         ConvertUrlToDomainPipe,
         SidebarComponent,
-        // FolderListComponent,
-        // TagListComponent,
+        FolderListComponent,
+        TagListComponent,
     ],
   imports: [
     CommonModule,
