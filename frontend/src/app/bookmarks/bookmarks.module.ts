@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { BookmarksListComponent } from './bookmarks-list/bookmarks-list.component';
 import { RouterModule } from '@angular/router';
 import { MDBBootstrapModule} from 'angular-bootstrap-md';
 import { BookmarksComponent } from './bookmarks.component';
+import { BookmarksListComponent } from './bookmarks-list/bookmarks-list.component';
 // import { ConvertUrlToDomainPipe } from './bookmarks-list/convert-url-to-domain.pipe';
 // import { SidebarComponent } from './sidebar/sidebar.component';
 // import { FolderListComponent } from './sidebar/folder-list/folder-list.component';
@@ -12,8 +12,8 @@ import { BookmarksComponent } from './bookmarks.component';
 
 @NgModule({
     declarations: [
-        // BookmarksListComponent,
         BookmarksComponent,
+        BookmarksListComponent,
         // ConvertUrlToDomainPipe,
         // SidebarComponent,
         // FolderListComponent,
