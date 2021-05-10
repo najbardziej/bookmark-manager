@@ -67,7 +67,7 @@ namespace bookmark_manager.API.Controllers
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == userId);
 
 
-            if(category.NodeLevel >= _MAX_NESTING)
+            if(category?.NodeLevel >= _MAX_NESTING)
                 return BadRequest($"Nest level cannot be higher than { _MAX_NESTING }");
             
             var categoryToAdd = new Category
