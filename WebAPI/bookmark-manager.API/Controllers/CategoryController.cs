@@ -39,8 +39,7 @@ namespace bookmark_manager.API.Controllers
                                                     .ThenInclude(c => c.Subcategories)
                                                     .SingleOrDefaultAsync(c => c.Id == categoryId);
 
-            var categoryToReturn = _mapper.Map<CategoryDto>(category);
-            return categoryToReturn == null ? NoContent() : Ok(categoryToReturn);
+            return category == null ? NoContent() : Ok( _mapper.Map<CategoryDto>(category));
         }
 
         [HttpGet("{userId}")]
@@ -54,7 +53,7 @@ namespace bookmark_manager.API.Controllers
                                                         .Where(c => c.User.UserId == userId)
                                                         .ToListAsync();
 
-            return categories == null ? NoContent() : Ok(categories);
+            return categories == null ? NoContent() : Ok( _mapper.Map<List<CategoryDto>>(categories));
         }      
 
 
