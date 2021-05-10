@@ -50,7 +50,7 @@ namespace bookmark_manager.API.Controllers
 
             var categories = await _context.Categories.Include(c => c.Subcategories)
                                                         .ThenInclude(c => c.Subcategories)
-                                                        .Where(c => c.User.UserId == userId)
+                                                        .Where(c => c.User.UserId == userId && c.NodeLevel == 1)
                                                         .ToListAsync();
 
             return categories == null ? NoContent() : Ok( _mapper.Map<List<CategoryDto>>(categories));
