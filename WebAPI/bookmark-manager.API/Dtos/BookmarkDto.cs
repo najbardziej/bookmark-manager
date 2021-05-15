@@ -13,5 +13,7 @@ namespace bookmark_manager.API.Dtos
         public string Url { get; set; }
         [Required]
         public int UserId { get; set; }
+
+        public CategoryInBookmarkDto Category { get; set; }
     }
 }
