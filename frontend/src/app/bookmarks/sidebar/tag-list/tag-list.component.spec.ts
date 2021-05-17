@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TagListComponent } from './tag-list.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('TagListComponent', () => {
   let component: TagListComponent;
@@ -8,7 +10,8 @@ describe('TagListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TagListComponent ]
+      declarations: [ TagListComponent ],
+      imports: [ ReactiveFormsModule, HttpClientModule, FormsModule ]
     })
     .compileComponents();
   });

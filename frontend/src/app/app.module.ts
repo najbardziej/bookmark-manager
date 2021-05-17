@@ -18,8 +18,9 @@ import { BookmarksModule } from './bookmarks/bookmarks.module';
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
+  exports: [],
   schemas: [
     NO_ERRORS_SCHEMA
   ],

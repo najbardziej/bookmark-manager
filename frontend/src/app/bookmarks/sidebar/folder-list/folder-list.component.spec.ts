@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FolderListComponent } from './folder-list.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('FolderListComponent', () => {
   let component: FolderListComponent;
@@ -8,7 +10,8 @@ describe('FolderListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FolderListComponent ]
+      declarations: [ FolderListComponent ],
+      imports: [ ReactiveFormsModule, HttpClientModule, FormsModule ]
     })
     .compileComponents();
   });

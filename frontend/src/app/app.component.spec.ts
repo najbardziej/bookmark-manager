@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import {RouterModule, RouterOutlet} from '@angular/router';
+import {ConvertUrlToDomainPipe} from './bookmarks/bookmarks-list/convert-url-to-domain.pipe';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -18,6 +19,7 @@ describe('AppComponent', () => {
       declarations: [
         RegisterComponent,
         AppComponent,
+        ConvertUrlToDomainPipe,
         LoginComponent
       ],
       providers: [
@@ -42,6 +44,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('frontend app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('2021');
   });
 });
