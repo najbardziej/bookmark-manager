@@ -27,44 +27,35 @@ namespace bookmark_manager.API.Controllers
             _mapper = mapper;
             _context = context;
         }
-        // GET: bookmark/{userId}
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<List<BookmarkDto>>> GetUserBookmarks(int userId)
-        {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
 
+        [HttpGet]
+        public async Task<ActionResult<List<BookmarkDto>>> GetUserBookmarks()
+        {
             var bookmarks = await _context.Bookmarks.Include(b => b.User)
                                                     .Include(b => b.Category)
-                                                    .Where(b => b.UserId == userId)
+                                                    .Where(b => b.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                                                     .ToListAsync();
 
             return bookmarks == null ? NoContent() : Ok(_mapper.Map<List<BookmarkDto>>(bookmarks));
         }
 
 
-        // GET: bookmark/{userId}/5
-        [HttpGet("{userId}/{id}")]
-        public async Task<ActionResult<BookmarkDto>> GetUserBookmarkById(int userId, int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BookmarkDto>> GetUserBookmarkById(int id)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-
             var bookmark = await _context.Bookmarks.Include(x => x.User)
                                                     .Include(b => b.Category)
-                                                    .SingleOrDefaultAsync(x => x.BookmarkId == id);
+                                                    .SingleOrDefaultAsync(x => x.BookmarkId == id &&
+                                                     x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             return bookmark == null ? NoContent() : Ok(_mapper.Map<BookmarkDto>(bookmark));
         }
 
-        // POST: bookmark/{userId}
-        [HttpPost("{userId}")]
-        public async Task<ActionResult> CreateBookmark(int userId, BookmarkDto bookmarkDto)
+        [HttpPost]
+        public async Task<ActionResult> CreateBookmark(BookmarkDto bookmarkDto)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
 
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == userId);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             if(user == null)
                 return BadRequest("Cound not find a user");
@@ -92,14 +83,10 @@ namespace bookmark_manager.API.Controllers
             throw new Exception("Failed to create bookmark");           
         }
 
-        // PUT: bookmark/{userId}/5
-        [HttpPut("{userId}/{id}")]
-        public async Task<ActionResult> UpdateBookmark(int userId, int id, BookmarkDto bookmarkDto)
-        {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-            
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == userId);
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateBookmark(int id, BookmarkDto bookmarkDto)
+        {        
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             var bookmark = await _context.Bookmarks.Include(b => b.Category).SingleOrDefaultAsync(x => x.BookmarkId == id);
 
@@ -116,14 +103,11 @@ namespace bookmark_manager.API.Controllers
             throw new Exception("Failed to update bookmark");
         }
 
-        // DELETE: bookmark/1/5
-        [HttpDelete("{userId}/{id}")]
-        public async Task<ActionResult> Delete(int userId, int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-
-            var bookmark = await _context.Bookmarks.Include(b => b.Category).SingleOrDefaultAsync(x => x.BookmarkId == id);
+            var bookmark = await _context.Bookmarks.Include(b => b.Category).SingleOrDefaultAsync(x => x.BookmarkId == id &&
+                 x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             if (bookmark == null)
                 return BadRequest("Invalid bookmark ID");
