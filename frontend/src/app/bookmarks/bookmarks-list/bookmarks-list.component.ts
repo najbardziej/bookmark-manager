@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnDestroy, OnInit, ElementRef} from '@angular/core';
+import {Component, ViewChild, OnDestroy, OnInit} from '@angular/core';
 import {BookmarkService} from './bookmark.service';
 import {Subscription} from 'rxjs';
 import {Bookmark} from '../bookmark';
@@ -11,7 +11,8 @@ import {Bookmark} from '../bookmark';
 export class BookmarksListComponent implements OnInit, OnDestroy {
   @ViewChild('content', { static: true }) public contentModal: any;
   public editedBookmark: Bookmark;
-
+  editContent = '';
+  editTitle = '';
   subscription!: Subscription;
   errorMessage = '';
   bookmarks: Bookmark[] = [];
@@ -34,6 +35,25 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
 
   onEditButtonClicked($event: Bookmark): void {
     this.editedBookmark = $event;
+    this.editTitle = $event.title;
+    this.editContent = $event.content;
     this.contentModal.show();
+  }
+
+  onDeleteButtonClicked(): void {
+    this.bookmarkService.deleteBookmark(this.editedBookmark)
+      .subscribe(data => {
+        console.log('Successful');
+      });
+    window.location.reload();
+  }
+  editBookmark(): void {
+    this.editedBookmark.title = this.editTitle;
+    this.editedBookmark.content = this.editContent;
+    this.bookmarkService.editBookmark(this.editedBookmark)
+      .subscribe(data => {
+        console.log('Successful');
+      });
+    this.contentModal.hide();
   }
 }
