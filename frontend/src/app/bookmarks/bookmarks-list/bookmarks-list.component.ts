@@ -36,7 +36,12 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.editedBookmark = $event;
     this.contentModal.show();
   }
-
+  onDeleteButtonClicked(): void {
+    this.bookmarkService.deleteBookmark(this.editedBookmark)
+      .subscribe(data => {
+        console.log('Successful');
+      });
+  }
   editBookmark(): void {
     this.bookmarkService.editBookmark(this.editedBookmark)
       .subscribe(data => {

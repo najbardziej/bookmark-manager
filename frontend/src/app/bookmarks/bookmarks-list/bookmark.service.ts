@@ -28,6 +28,14 @@ export class BookmarkService {
     );
   }
 
+  deleteBookmark(model: Bookmark): Observable<Bookmark> {
+    return this.http.delete<Bookmark>(`${this.bookmarkUrl}/${model.bookmarkId}`).pipe(
+      map((response: Bookmark) =>  {
+        return response;
+      })
+    );
+  }
+
   private handleError(err: HttpErrorResponse) {
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
