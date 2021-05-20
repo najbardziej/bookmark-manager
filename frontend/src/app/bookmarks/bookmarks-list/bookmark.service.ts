@@ -20,7 +20,6 @@ export class BookmarkService {
   }
 
   editBookmark(model: Bookmark): Observable<Bookmark> {
-    console.log(model);
     return this.http.put<Bookmark>(`${this.bookmarkUrl}/${model.bookmarkId}`, model).pipe(
       map((response: Bookmark) =>  {
         return response;

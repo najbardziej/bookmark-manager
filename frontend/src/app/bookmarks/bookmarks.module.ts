@@ -9,6 +9,7 @@ import { ConvertUrlToDomainPipe } from './bookmarks-list/convert-url-to-domain.p
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FolderListComponent } from './sidebar/folder-list/folder-list.component';
 import { TagListComponent } from './sidebar/tag-list/tag-list.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,8 @@ import { TagListComponent } from './sidebar/tag-list/tag-list.component';
       // },
     ]),
     MDBBootstrapModule,
+    ReactiveFormsModule,
+    FormsModule,
   ]
 })
 export class BookmarksModule { }
