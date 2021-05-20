@@ -8,7 +8,7 @@ import {catchError, tap} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class BookmarkService {
-  private bookmarkUrl = 'http://localhost:8080/Bookmark/1';
+  private bookmarkUrl = 'https://localhost:5001/Bookmark';
 
   constructor(private http: HttpClient) { }
 
@@ -26,6 +26,7 @@ export class BookmarkService {
     } else {
       errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
     }
+    console.log(err)
     console.log(errorMessage);  // wysłanie danych do odpowiednich logów
     return throwError(errorMessage);
   }
