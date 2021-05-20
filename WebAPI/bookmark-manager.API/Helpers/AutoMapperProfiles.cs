@@ -10,7 +10,9 @@ namespace bookmark_manager.API.Helpers
         {
             CreateMap<User, RegisterDto>().ReverseMap();
             CreateMap<User, LoginDto>().ReverseMap();
-            CreateMap<Bookmark, BookmarkDto>().ReverseMap();
+            CreateMap<Bookmark, BookmarkDto>();
+            CreateMap<BookmarkDto, Bookmark>()
+            .ForMember(dest => dest.BookmarkId, field => field.Ignore());
             CreateMap<CategoryDto, Category>()
             .ForMember(dest => dest.Id, field => field.Ignore())
                 .ReverseMap();
