@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Bookmark} from '../bookmark';
 import {Observable, throwError} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,15 @@ export class BookmarkService {
     );
   }
 
+  editBookmark(model: Bookmark): Observable<Bookmark> {
+    console.log(model);
+    return this.http.put<Bookmark>(`${this.bookmarkUrl}/${model.bookmarkId}`, model).pipe(
+      map((response: Bookmark) =>  {
+        return response;
+      })
+    );
+  }
+
   private handleError(err: HttpErrorResponse) {
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
@@ -26,7 +35,7 @@ export class BookmarkService {
     } else {
       errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
     }
-    console.log(err)
+    console.log(err);
     console.log(errorMessage);  // wysłanie danych do odpowiednich logów
     return throwError(errorMessage);
   }
