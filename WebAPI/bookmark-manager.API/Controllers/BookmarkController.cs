@@ -36,6 +36,7 @@ namespace bookmark_manager.API.Controllers
 
             var bookmarks = await _context.Bookmarks.Include(b => b.User)
                                                     .Include(b => b.Category)
+                                                    .Include(b => b.Tags)
                                                     .Where(b => b.UserId == userId)
                                                     .ToListAsync();
 
@@ -52,6 +53,7 @@ namespace bookmark_manager.API.Controllers
 
             var bookmark = await _context.Bookmarks.Include(x => x.User)
                                                     .Include(b => b.Category)
+                                                    .Include(b => b.Tags)
                                                     .SingleOrDefaultAsync(x => x.BookmarkId == id);
 
             return bookmark == null ? NoContent() : Ok(_mapper.Map<BookmarkDto>(bookmark));
@@ -72,6 +74,10 @@ namespace bookmark_manager.API.Controllers
             Category category = null;
             if(bookmarkDto.Category != null)
                 category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Category.Id);
+            
+            Tag tag = null; //todo???
+            if (bookmarkDto.Tags != null)
+                tag = await _context.Tags.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Tags[0].Id);
 
             var bookmarkToAdd = new Bookmark
             {
@@ -83,6 +89,8 @@ namespace bookmark_manager.API.Controllers
 
             if(category != null)
                 bookmarkToAdd.Category = category;
+            if (tag != null) // todo???
+                bookmarkToAdd.Tags.Add(tag);
 
             await _context.Bookmarks.AddAsync(bookmarkToAdd);
 
@@ -101,7 +109,7 @@ namespace bookmark_manager.API.Controllers
             
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == userId);
 
-            var bookmark = await _context.Bookmarks.Include(b => b.Category).SingleOrDefaultAsync(x => x.BookmarkId == id);
+            var bookmark = await _context.Bookmarks.Include(b => b.Category).Include(b => b.Tags).SingleOrDefaultAsync(x => x.BookmarkId == id);
 
             if (bookmark == null)
                 return BadRequest("Invalid bookmark ID");
@@ -123,7 +131,7 @@ namespace bookmark_manager.API.Controllers
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var bookmark = await _context.Bookmarks.Include(b => b.Category).SingleOrDefaultAsync(x => x.BookmarkId == id);
+            var bookmark = await _context.Bookmarks.Include(b => b.Category).Include(b => b.Tags).SingleOrDefaultAsync(x => x.BookmarkId == id);
 
             if (bookmark == null)
                 return BadRequest("Invalid bookmark ID");

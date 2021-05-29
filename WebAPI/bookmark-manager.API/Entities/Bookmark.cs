@@ -16,5 +16,7 @@ namespace bookmark_manager.API.Entities
         public User User { get; set; }
 
         public Category Category { get; set; }
+
+        public List<Tag> Tags { get; set; }
     }
 }
