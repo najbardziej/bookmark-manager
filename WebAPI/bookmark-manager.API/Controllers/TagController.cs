@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using bookmark_manager.API.Data;
 using bookmark_manager.API.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -9,9 +12,6 @@ using bookmark_manager.API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace bookmark_manager.API.Controllers
 {
@@ -28,37 +28,33 @@ namespace bookmark_manager.API.Controllers
             _context = context;
         }
 
-        [HttpGet("{userId}/{tagId}")]
-        public async Task<ActionResult<Tag>> GetTagById(int userId, int tagId)
+        [HttpGet("{tagId}")]
+        public async Task<ActionResult<Tag>> GetTagById(int tagId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
 
-            var tag = await _context.Tags.SingleOrDefaultAsync(c => c.Id == tagId);
+            var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Id == tagId
+                                                                    && t.User.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             return tag == null ? NoContent() : Ok(_mapper.Map<TagDto>(tag));
         }
 
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<List<Tag>>> GetTags(int userId)
+        [HttpGet]
+        public async Task<ActionResult<List<Tag>>> GetTags()
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-            //TODO
-            var tags = await _context.Tags.Where(t => t.User.UserId == userId)
+
+            var tags = await _context.Tags.Where(t => t.User.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                                                         .ToListAsync();
 
             return tags == null ? NoContent() : Ok(_mapper.Map<List<TagDto>>(tags));
         }
 
 
-        [HttpPost("{userId}/{tagId?}")]
-        public async Task<ActionResult> CreateTag(int userId, int tagId, TagDto tagDto)
+        [HttpPost("{tagId?}")]
+        public async Task<ActionResult> CreateTag(int tagId, TagDto tagDto)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-
-            var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Id == tagId);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Id == tagId &&
+                t.User.UserId == userId);
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == userId);
 
             var tagToAdd = new Tag
@@ -66,13 +62,8 @@ namespace bookmark_manager.API.Controllers
                 Name = tagDto.Name,
                 User = user
             };
-            // ????
-            if (tag == null)
-                _context.Tags.Add(tagToAdd);
-            else
-            {
-                _context.Tags.Add(tagToAdd);
-            }
+
+            await _context.Tags.AddAsync(tagToAdd);
 
             if (await _context.SaveChangesAsync() > 0)
                 return CreatedAtAction(nameof(GetTagById), new { userId = userId, tagId = tagId }, tagDto);
@@ -80,13 +71,12 @@ namespace bookmark_manager.API.Controllers
             throw new Exception("Failed to create tag");
         }
 
-        [HttpPut("{userId}/{tagId}")]
-        public async Task<ActionResult> UpdateCategory(int userId, int tagId, TagDto tagDto)
+        [HttpPut("{tagId}")]
+        public async Task<ActionResult> UpdateCategory( int tagId, TagDto tagDto)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
 
-            var tag = await _context.Tags.Include(t => t.User).SingleOrDefaultAsync(t => t.Id == tagId);
+            var tag = await _context.Tags.Include(t => t.User).SingleOrDefaultAsync(t => t.Id == tagId &&
+                                                        t.User.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             if (tag == null)
                 return BadRequest("Invalid tag id");
@@ -101,13 +91,11 @@ namespace bookmark_manager.API.Controllers
             throw new Exception("Failed to update tag");
         }
 
-        [HttpDelete("{userId}/{tagId}")]
-        public async Task<ActionResult> RemoveTag(int userId, int tagId)
+        [HttpDelete("{tagId}")]
+        public async Task<ActionResult> RemoveTag(int tagId)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();
-
-            var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Id == tagId);
+            var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Id == tagId &&
+                                                        t.User.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             _context.Tags.Remove(tag);
 
