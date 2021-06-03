@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Validators, FormBuilder, FormGroup} from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../model/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'bm-register',
@@ -11,7 +12,7 @@ import { User } from '../../../model/user';
 export class RegisterComponent implements OnInit {
   user: User;
   registerForm: FormGroup;
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
   }
   ngOnInit(): void {
     this.createRegisterForm();
@@ -27,6 +28,7 @@ export class RegisterComponent implements OnInit {
     this.user = Object.assign({}, this.registerForm.value);
     this.authService.register(this.user)
       .subscribe(data => {
+        this.router.navigate(['signin']);
         console.log('Successful');
       });
   }
