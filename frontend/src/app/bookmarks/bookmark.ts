@@ -9,5 +9,5 @@ export interface Bookmark {
   userId: number;
   tags: Tag[];
   addedAt: Date;
-  folder: Folder;
+  category: Folder;
 }

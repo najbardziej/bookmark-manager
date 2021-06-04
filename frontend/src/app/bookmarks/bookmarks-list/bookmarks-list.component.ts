@@ -2,6 +2,7 @@ import {Component, ViewChild, OnDestroy, OnInit} from '@angular/core';
 import {BookmarkService} from './bookmark.service';
 import {Subscription} from 'rxjs';
 import {Bookmark} from '../bookmark';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'bm-bookmarks-list',
@@ -15,15 +16,25 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   editTitle = '';
   subscription!: Subscription;
   errorMessage = '';
+  allBookmarks: Bookmark[] = [];
   bookmarks: Bookmark[] = [];
+  params: Params;
 
-  constructor(private bookmarkService: BookmarkService) { }
+  constructor(private bookmarkService: BookmarkService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subscription =
       this.bookmarkService.getBookmarks().subscribe({
         next: bookmarks => {
-          this.bookmarks = bookmarks;
+          this.allBookmarks = bookmarks;
+          this.route.queryParams.subscribe(params => {
+            if (params['category']){
+              this.bookmarks = [];
+              this.bookmarks = this.allBookmarks.filter(b => b.category?.name == params['category']);
+            }else{
+              this.bookmarks = this.allBookmarks; 
+            }
+          })
         },
         error: err => this.errorMessage = err
       });
@@ -47,6 +58,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       });
     window.location.reload();
   }
+
   editBookmark(): void {
     this.editedBookmark.title = this.editTitle;
     this.editedBookmark.content = this.editContent;

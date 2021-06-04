@@ -1,9 +1,22 @@
-<!--<p>folder-list works!</p>-->
 <p class="menu-group text-white-50 m-0 mt-3">My folders</p>
-<ul class="nav-menu m-0 p-0 list-unstyled" *ngFor="let folder of folders">
-  <li class="py-0">
-    <a href="#" class="text-light">
-      <span class="material-icons align-middle">folder</span> {{folder.name}}
-    </a>
-  </li>
+<ul class="nav-menu m-0 p-0 list-unstyled">
+  <ng-container
+    *ngTemplateOutlet="recursiveListTmpl; context:{ list: folders }"
+  ></ng-container>
 </ul>
+
+<ng-template #recursiveListTmpl let-list="list">
+  <li class="py-0 list-unstyled" *ngFor="let category of list">
+    <a [routerLink]="['/bookmarks']" [queryParams]="{category: category.name}"  class="text-light">
+      <span class="material-icons align-middle">folder</span> {{category.name}} 
+      <button class="btn btn-link text-light h4 p-1 m-0" *ngIf="category.nodeLevel < 2">+</button>
+      <button class="btn btn-link text-light h4 p-1 m-0" (click)="removeFolder(category)">-</button>
+      <button>Edit name</button>
+    </a>
+    <ul *ngIf="category.subcategories.length > 0">
+      <ng-container
+        *ngTemplateOutlet="recursiveListTmpl; context:{ list: category.subcategories }"
+      ></ng-container>
+    </ul>
+  </li>
+</ng-template>

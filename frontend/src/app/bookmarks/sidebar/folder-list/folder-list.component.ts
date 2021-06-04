@@ -29,4 +29,16 @@ export class FolderListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  removeFolder(folder: Folder): void{
+    this.folderService.deleteFolder(folder).subscribe(
+      data => {
+        const index = this.folders.indexOf(folder, 0);
+        if(index > -1){
+          this.folders.splice(index, 1);
+        }
+        console.log('Successful');
+      }
+    );
+  }
+
 }
