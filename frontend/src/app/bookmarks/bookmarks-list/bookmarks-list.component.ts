@@ -14,6 +14,8 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   public editedBookmark: Bookmark;
   editContent = '';
   editTitle = '';
+  editUrl = '';
+  editId: number;
   subscription!: Subscription;
   errorMessage = '';
   allBookmarks: Bookmark[] = [];
@@ -32,9 +34,9 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
               this.bookmarks = [];
               this.bookmarks = this.allBookmarks.filter(b => b.category?.name == params['category']);
             }else{
-              this.bookmarks = this.allBookmarks; 
+              this.bookmarks = this.allBookmarks;
             }
-          })
+          });
         },
         error: err => this.errorMessage = err
       });
@@ -47,7 +49,18 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   onEditButtonClicked($event: Bookmark): void {
     this.editedBookmark = $event;
     this.editTitle = $event.title;
+    this.editUrl = $event.url;
     this.editContent = $event.content;
+    this.editId  = $event.bookmarkId;
+    this.contentModal.show();
+  }
+
+  onAddButtonClicked($event: Bookmark): void {
+    this.editedBookmark = $event;
+    this.editTitle = $event.title;
+    this.editUrl = $event.url;
+    this.editContent = $event.content;
+    this.editId  = $event.bookmarkId;
     this.contentModal.show();
   }
 
@@ -62,10 +75,19 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   editBookmark(): void {
     this.editedBookmark.title = this.editTitle;
     this.editedBookmark.content = this.editContent;
-    this.bookmarkService.editBookmark(this.editedBookmark)
-      .subscribe(data => {
-        console.log('Successful');
-      });
+    this.editedBookmark.url = this.editUrl;
+    if (this.editId) {
+      this.bookmarkService.editBookmark(this.editedBookmark)
+        .subscribe(data => {
+          console.log('Successful');
+        });
+    } else {
+      this.bookmarkService.addBookmark(this.editedBookmark)
+        .subscribe(data => {
+          console.log('Successful');
+        });
+      window.location.reload();
+    }
     this.contentModal.hide();
   }
 }

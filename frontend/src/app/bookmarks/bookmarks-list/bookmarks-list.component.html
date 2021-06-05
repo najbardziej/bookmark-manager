@@ -1,13 +1,15 @@
 <!--<p>bookmarks-list works!</p>-->
-<div class="p-3 p-md-5">
+<div class="p-3 p-md-5 position-relative">
   <bm-bookmark *ngFor="let bookmark of bookmarks" [bookmark]="bookmark" (editButtonClicked)="onEditButtonClicked($event)"></bm-bookmark>
+  <bm-new-bookmark (addButtonClicked)="onEditButtonClicked($event)"></bm-new-bookmark>
 </div>
 
 <div mdbModal #content="mdbModal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="exampleModalLabel">Edit bookmark</h4>
+        <h4 *ngIf="editedBookmark?.bookmarkId != null" class="modal-title" id="exampleModalLabel">Edit bookmark</h4>
+        <h4 *ngIf="editedBookmark?.bookmarkId == null" class="modal-title" id="exampleModalLabel2">Add bookmark</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="content.hide()">
           <span aria-hidden="true">×</span>
         </button>
@@ -15,9 +17,14 @@
       <div class="modal-body">
         <form action="#" method="post">
           <!--            TODO: set correct action and method or set this in Angular component -->
+          <input mdbInput type="hidden" id="bookmarkId" class="form-control" name="id" [(ngModel)]="editId" [value]="editedBookmark?.bookmarkId">
           <div class="md-form">
             <input mdbInput type="text" id="bookmarkTitle" class="form-control" name="title" [(ngModel)]="editTitle" [value]="editedBookmark?.title">
             <label for="bookmarkTitle">Title</label>
+          </div>
+          <div class="md-form">
+            <input mdbInput type="text" id="bookmarkUrl" class="form-control" name="url" [(ngModel)]="editUrl" [value]="editedBookmark?.url">
+            <label for="bookmarkUrl">Url</label>
           </div>
           <div class="md-form">
             <textarea class="md-textarea form-control" name="content" [(ngModel)]="editContent" rows="2" id="input_text" type="text" length="120" mdbCharCounter mdbInput [value]="editedBookmark?.content" ></textarea>
@@ -39,7 +46,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" mdbBtn color="red" class="waves-light" (click)="onDeleteButtonClicked()" mdbWavesEffect>Delete bookmark</button>
+        <button *ngIf="editedBookmark?.bookmarkId != null" type="button" mdbBtn color="red" class="waves-light" (click)="onDeleteButtonClicked()" mdbWavesEffect>Delete bookmark</button>
         <!--          <button type="button" mdbBtn color="light" class="waves-light" (click)="content.hide()" mdbWavesEffect>Close</button>-->
         <button type="button" mdbBtn color="primary" class="waves-light" mdbWavesEffect (click)="editBookmark()">Save changes</button>
       </div>

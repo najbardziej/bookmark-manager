@@ -19,6 +19,15 @@ export class BookmarkService {
     );
   }
 
+  addBookmark(model: Bookmark): Observable<Bookmark> {
+    alert(JSON.stringify(model, null, 2));
+    return this.http.post<Bookmark>(`${this.bookmarkUrl}`, model).pipe(
+      map((response: Bookmark) =>  {
+        return response;
+      })
+    );
+  }
+
   editBookmark(model: Bookmark): Observable<Bookmark> {
     return this.http.put<Bookmark>(`${this.bookmarkUrl}/${model.bookmarkId}`, model).pipe(
       map((response: Bookmark) =>  {

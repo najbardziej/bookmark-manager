@@ -4,16 +4,16 @@
   <div class="flex-grow-1">
     <div class="d-md-flex flex-md-row justify-content-between">
       <h6 class="m-0">
-        <a class="" [href]="bookmark.url" [title]="bookmark.title">{{bookmark.title}}</a>
+        <a class="" [href]="bookmark?.url" [title]="bookmark?.title">{{bookmark?.title}}</a>
       </h6>
       <div>
-        <small class="text-black-50">{{bookmark.url | convertUrlToDomain }} | {{ bookmark.addedAt | date}}</small> <!-- TODO: bookmark.addedAt | dateAgo -->
+        <small class="text-black-50">{{bookmark?.url | convertUrlToDomain }} | {{ bookmark?.addedAt | date}}</small> <!-- TODO: bookmark.addedAt | dateAgo -->
       </div>
     </div>
-    <p class="card-subtitle">{{bookmark.content}}</p>
+    <p class="card-subtitle">{{bookmark?.content}}</p>
     <div class="d-flex justify-content-between">
       <div>
-        <button *ngFor="let tag of bookmark.tags" type="button" class="btn btn-light tag btn-sm">{{tag.name}}</button>
+        <button *ngFor="let tag of bookmark?.tags" type="button" class="btn btn-light tag btn-sm">{{tag?.name}}</button>
       </div>
       <button type="button" mdbBtn color="primary" class="btn btn-sm edit-button waves-light" (click)="onClick()" mdbWavesEffect>
         <!--          TODO: pass correct bookmark id (change 1. argument in show())-->

@@ -10,6 +10,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { FolderListComponent } from './sidebar/folder-list/folder-list.component';
 import { TagListComponent } from './sidebar/tag-list/tag-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NewBookmarkComponent} from './bookmarks-list/bookmark/new-bookmark.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     SidebarComponent,
     FolderListComponent,
     TagListComponent,
+    NewBookmarkComponent,
   ],
   imports: [
     CommonModule,
