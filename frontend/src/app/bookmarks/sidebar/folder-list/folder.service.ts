@@ -20,6 +20,22 @@ export class FolderService {
     );
   }
 
+  addFolder(model: Folder): Observable<Folder> {
+    return this.http.post<Folder>(`${this.folderUrl}`, model).pipe(
+      map((response: Folder) =>  {
+        return response;
+      })
+    );
+  }
+
+  addNestedFolder(model: Folder, parentId: number): Observable<Folder> {
+    return this.http.post<Folder>(`${this.folderUrl}/${parentId}`, model).pipe(
+      map((response: Folder) =>  {
+        return response;
+      })
+    );
+  }
+
   editFolder(model: Folder): Observable<Folder> {
     return this.http.put<Folder>(`${this.folderUrl}/${model.id}`, model).pipe(
       map((response: Folder) =>  {

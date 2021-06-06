@@ -1,4 +1,10 @@
-<p class="menu-group text-white-50 m-0 mt-3">My folders</p>
+<div class="d-flex flex-row justify-content-between mt-3">
+  <p class="menu-group text-white-50 m-0">My folders</p>
+  <a class="btn btn-link text-light p-0 m-0 px-2"
+     (click)="onAddButtonClicked(null)">
+    <i class="fas fa-folder-plus" style="font-size: 1rem"></i>
+  </a>
+</div>
 <ul class="nav-menu m-0 p-0 list-unstyled">
   <ng-container
     *ngTemplateOutlet="recursiveListTmpl; context:{ list: folders }"
@@ -6,13 +12,20 @@
 </ul>
 
 <ng-template #recursiveListTmpl let-list="list">
-  <li class="py-0 list-unstyled" *ngFor="let category of list">
+  <li class="py-0 list-unstyled folder-entry" *ngFor="let category of list">
     <a [routerLink]="['/bookmarks']" [queryParams]="{category: category.name}"  class="text-light">
-      <span class="material-icons align-middle">folder</span> {{category.name}} 
-      <button class="btn btn-link text-light h4 p-1 m-0" *ngIf="category.nodeLevel < 2">+</button>
-      <button class="btn btn-link text-light h4 p-1 m-0" (click)="removeFolder(category)">-</button>
-      <button>Edit name</button>
+      <span class="material-icons align-middle">folder</span> {{category.name}}
     </a>
+    <div class="float-right edit-folder-options">
+      <a class="btn btn-link text-light p-0 m-0 px-2" *ngIf="category.nodeLevel < 2"
+         (click)="onAddNestedButtonClicked(category)">
+        <i class="fas fa-folder-plus" style="font-size: 1rem"></i>
+      </a>
+      <a class="btn btn-link text-light p-0 m-0 px-2"
+         (click)="onEditButtonClicked(category)">
+        <i class="fas fa-pen-square" style="font-size: 1rem"></i>
+      </a>
+    </div>
     <ul *ngIf="category.subcategories.length > 0">
       <ng-container
         *ngTemplateOutlet="recursiveListTmpl; context:{ list: category.subcategories }"
@@ -20,3 +33,31 @@
     </ul>
   </li>
 </ng-template>
+
+<div mdbModal #content="mdbModal" class="modal fade" id="folderModal" tabindex="-1" role="dialog" aria-labelledby="folderModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 *ngIf="editedFolder?.id != null" class="modal-title" id="folderModalLabel">Edit folder</h4>
+        <h4 *ngIf="editedFolder?.id == null" class="modal-title" id="folderModalLabel2">Add folder</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="content.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="#" method="post">
+          <input mdbInput type="hidden" id="id" class="form-control" name="id" [(ngModel)]="editId" [value]="editedFolder?.id">
+          <input mdbInput type="hidden" id="nodeLevel" class="form-control" name="id" [(ngModel)]="editNodeLevel" [value]="editedFolder?.nodeLevel">
+          <div class="md-form">
+            <input mdbInput type="text" id="name" class="form-control" name="title" [(ngModel)]="editName" [value]="editedFolder?.name">
+            <label for="name">Name</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="editedFolder?.id != null" type="button" mdbBtn color="red" class="waves-light" (click)="removeFolder(editedFolder)" mdbWavesEffect>Delete folder</button>
+        <button type="button" mdbBtn color="primary" class="waves-light" mdbWavesEffect (click)="editFolder()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

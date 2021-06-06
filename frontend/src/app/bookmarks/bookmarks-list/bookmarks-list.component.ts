@@ -47,6 +47,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   }
 
   onEditButtonClicked($event: Bookmark): void {
+    document.body.appendChild(document.getElementById('exampleModal'));
     this.editedBookmark = $event;
     this.editTitle = $event.title;
     this.editUrl = $event.url;

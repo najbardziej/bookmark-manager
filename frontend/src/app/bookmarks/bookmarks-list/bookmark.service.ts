@@ -20,7 +20,6 @@ export class BookmarkService {
   }
 
   addBookmark(model: Bookmark): Observable<Bookmark> {
-    alert(JSON.stringify(model, null, 2));
     return this.http.post<Bookmark>(`${this.bookmarkUrl}`, model).pipe(
       map((response: Bookmark) =>  {
         return response;
