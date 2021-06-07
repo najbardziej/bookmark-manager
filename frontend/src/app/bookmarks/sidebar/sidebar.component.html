@@ -1,0 +1,53 @@
+<!--<p>sidebar works!</p>-->
+<div class="header-and-nav bg-primary d-flex flex-row flex-md-column p-3">
+  <header class="d-flex order-2 order-md-1">
+    <a href="/bookmarks" class="text-light">
+      <span class="material-icons logo-icon align-text-bottom">bookmark_border</span>
+      <span class="logo-text">bookmark-manager</span>
+    </a>
+  </header>
+  <nav class="order-1 order-md-2 mt-md-3 flex-md-grow-1">
+    <button class="hamburger-menu-icon pr-3">
+      <span class="material-icons align-text-top text-light">menu</span>
+    </button>
+    <div class="nav-menu bg-primary d-flex flex-column">
+      <ul class="m-0 p-0 list-unstyled">
+        <li class="menu-link">
+          <a href="/bookmarks" class="text-light">
+            <span class="material-icons align-middle py-1">collections_bookmark</span> All
+          </a>
+        </li>
+        <li>
+          <a href="#" class="text-light d-none">
+            <span class="material-icons align-middle py-1">content_copy</span> Unassigned
+          </a>
+        </li>
+        <li>
+          <a href="#" class="text-light d-none">
+            <span class="material-icons align-middle py-1">archive</span> Archived
+          </a>
+        </li>
+        <li>
+          <a href="#" class="text-light d-none">
+            <span class="material-icons align-middle py-1">history</span> Recently added
+          </a>
+        </li>
+        <li>
+          <a href="#" class="text-light d-none">
+            <span class="material-icons align-middle py-1">favorite_border</span> Favorite
+          </a>
+        </li>
+      </ul>
+      <bm-folder-list></bm-folder-list>
+      <bm-tag-list class="d-none"></bm-tag-list>
+      <div class="flex-grow-1"></div>
+      <ul class="m-0 p-0 list-unstyled">
+        <li class="menu-link">
+          <a (click)="logout()" class="text-light">
+            <span class="material-icons align-middle py-1">logout</span> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

@@ -1,0 +1,9 @@
+<!--<p>tag-list works!</p>-->
+<p class="menu-group text-white-50 m-0 mt-3">My tags</p>
+<ul class="m-0 p-0 list-unstyled" *ngFor="let tag of tags">
+  <li class="py-0">
+    <a href="#" class="text-light">
+      <span class="material-icons align-middle">label</span> {{tag.name}}
+    </a>
+  </li>
+</ul>

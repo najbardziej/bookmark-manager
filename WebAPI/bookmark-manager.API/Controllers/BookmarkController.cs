@@ -70,6 +70,7 @@ namespace bookmark_manager.API.Controllers
                 Content = bookmarkDto.Content,
                 Url = bookmarkDto.Url,
                 User = user,
+                AddedAt = DateTime.Now
             };
 
             if(category != null)
