@@ -10,4 +10,5 @@ export interface Bookmark {
   tags: Tag[];
   addedAt: Date;
   category: Folder;
+  folder: Folder;
 }

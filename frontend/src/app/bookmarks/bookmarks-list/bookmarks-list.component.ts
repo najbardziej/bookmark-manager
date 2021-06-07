@@ -3,6 +3,8 @@ import {BookmarkService} from './bookmark.service';
 import {Subscription} from 'rxjs';
 import {Bookmark} from '../bookmark';
 import { ActivatedRoute, Params } from '@angular/router';
+import {Folder} from '../folder';
+import {FolderService} from '../sidebar/folder-list/folder.service';
 
 @Component({
   selector: 'bm-bookmarks-list',
@@ -16,13 +18,16 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   editTitle = '';
   editUrl = '';
   editId: number;
+  editFolder: Folder;
   subscription!: Subscription;
+  folderSubscription!: Subscription;
   errorMessage = '';
   allBookmarks: Bookmark[] = [];
   bookmarks: Bookmark[] = [];
   params: Params;
+  folders: Folder[] = [];
 
-  constructor(private bookmarkService: BookmarkService, private route: ActivatedRoute) { }
+  constructor(private bookmarkService: BookmarkService, private folderService: FolderService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subscription =
@@ -30,9 +35,9 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
         next: bookmarks => {
           this.allBookmarks = bookmarks;
           this.route.queryParams.subscribe(params => {
-            if (params['category']){
+            if (params.category){
               this.bookmarks = [];
-              this.bookmarks = this.allBookmarks.filter(b => b.category?.name == params['category']);
+              this.bookmarks = this.allBookmarks.filter(b => b.category?.name == params.category);
             }else{
               this.bookmarks = this.allBookmarks;
             }
@@ -40,10 +45,18 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
         },
         error: err => this.errorMessage = err
       });
+    this.folderSubscription =
+      this.folderService.getFolders().subscribe({
+        next: folders => {
+          this.folders = folders;
+        },
+        error: err => this.errorMessage = err
+      });
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.folderSubscription.unsubscribe();
   }
 
   onEditButtonClicked($event: Bookmark): void {
@@ -53,6 +66,11 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.editUrl = $event.url;
     this.editContent = $event.content;
     this.editId  = $event.bookmarkId;
+    this.route.queryParams.subscribe(params => {
+      if (params.category) {
+        this.editFolder = this.folders.filter(f => f.name === params.category)[0];
+      }
+    });
     this.contentModal.show();
   }
 
@@ -61,7 +79,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.editTitle = $event.title;
     this.editUrl = $event.url;
     this.editContent = $event.content;
-    this.editId  = $event.bookmarkId;
+    this.editId = $event.bookmarkId;
     this.contentModal.show();
   }
 
@@ -77,6 +95,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.editedBookmark.title = this.editTitle;
     this.editedBookmark.content = this.editContent;
     this.editedBookmark.url = this.editUrl;
+    this.editedBookmark.category = this.editFolder;
     if (this.editId) {
       this.bookmarkService.editBookmark(this.editedBookmark)
         .subscribe(data => {
