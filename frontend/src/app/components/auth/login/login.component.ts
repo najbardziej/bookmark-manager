@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { User } from '../../../model/user';
 import { AuthService } from '../../../services/auth.service';
 
@@ -11,7 +12,7 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginComponent implements OnInit {
   user: User;
   loginForm: FormGroup;
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
   }
   ngOnInit(): void {
     this.createLoginForm();
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
     this.user = Object.assign({}, this.loginForm.value);
     this.authService.login(this.user)
       .subscribe(data => {
+        this.router.navigate(['bookmarks']);
         console.log('Successful');
       });
   }

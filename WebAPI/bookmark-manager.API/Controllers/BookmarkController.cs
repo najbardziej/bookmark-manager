@@ -76,6 +76,7 @@ namespace bookmark_manager.API.Controllers
                 User = user,
                 Tags = tags,
                 Category = category,
+                AddedAt = DateTime.Now
             };
 
             await _context.Bookmarks.AddAsync(bookmark);

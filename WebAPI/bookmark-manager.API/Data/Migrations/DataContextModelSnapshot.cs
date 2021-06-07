@@ -26,6 +26,9 @@ namespace bookmark_manager.API.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 

@@ -14,7 +14,7 @@ namespace bookmark_manager.API.Entities
         public string Url { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
-
+        public DateTime AddedAt { get; set; }
         public Category Category { get; set; }
 
         public List<Tag> Tags { get; set; }

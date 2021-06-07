@@ -116,8 +116,10 @@ namespace bookmark_manager.API.Controllers
                                                     .SingleOrDefaultAsync(c => c.Id == categoryId &&
                                                         c.User.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
-
-            foreach (var cat in category.Subcategories)
+            if(category == null)
+                return BadRequest("There is not category with that id");
+                
+            foreach(var cat in category.Subcategories)
             {
                 if (category.NodeLevel == 2)
                 {
