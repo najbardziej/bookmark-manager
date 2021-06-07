@@ -33,6 +33,7 @@ namespace bookmark_manager.API.Controllers
         {
             var bookmarks = await _context.Bookmarks.Include(b => b.User)
                                                     .Include(b => b.Category)
+                                                    .Include(b => b.Tags)
                                                     .Where(b => b.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                                                     .ToListAsync();
 
@@ -45,6 +46,7 @@ namespace bookmark_manager.API.Controllers
         {
             var bookmark = await _context.Bookmarks.Include(x => x.User)
                                                     .Include(b => b.Category)
+                                                    .Include(b => b.Tags)
                                                     .SingleOrDefaultAsync(x => x.BookmarkId == id &&
                                                      x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
@@ -54,42 +56,45 @@ namespace bookmark_manager.API.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateBookmark(BookmarkDto bookmarkDto)
         {
-
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
-            if(user == null)
-                return BadRequest("Cound not find a user");
+            if (user == null)
+                return BadRequest("Could not find a user");
 
             Category category = null;
-            if(bookmarkDto.Category != null)
-                category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Category.Id);
+            //if (bookmarkDto.Category != null)
+            //    category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Category.Id);
 
-            var bookmarkToAdd = new Bookmark
+            var tags = (await _context.Tags.ToListAsync())
+                .Where(t => bookmarkDto.Tags.ToList().Select(x => x.Id).Any(i => t.Id == i)).ToList();
+
+            var bookmark = new Bookmark
             {
                 Title = bookmarkDto.Title,
                 Content = bookmarkDto.Content,
                 Url = bookmarkDto.Url,
                 User = user,
+                Tags = tags,
+                Category = category,
                 AddedAt = DateTime.Now
             };
 
-            if(category != null)
-                bookmarkToAdd.Category = category;
+            await _context.Bookmarks.AddAsync(bookmark);
 
-            await _context.Bookmarks.AddAsync(bookmarkToAdd);
+            if (await _context.SaveChangesAsync() > 0)
+                return CreatedAtAction(nameof(GetUserBookmarkById), new { userId = user.UserId, id = bookmark.BookmarkId }, bookmarkDto);
 
-            if(await _context.SaveChangesAsync() > 0)
-                return CreatedAtAction(nameof(GetUserBookmarkById), new {userId = user.UserId, id = bookmarkToAdd.BookmarkId}, bookmarkDto);
-
-            throw new Exception("Failed to create bookmark");           
+            throw new Exception("Failed to create bookmark");
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateBookmark(int id, BookmarkDto bookmarkDto)
-        {        
+        {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
-            var bookmark = await _context.Bookmarks.Include(b => b.Category).SingleOrDefaultAsync(x => x.BookmarkId == id);
+            var bookmark = await _context.Bookmarks.Include(b => b.Category)
+                                                   .Include(b => b.Tags)
+                                                   .SingleOrDefaultAsync(x => x.BookmarkId == id);
 
             if (bookmark == null)
                 return BadRequest("Invalid bookmark ID");
@@ -98,7 +103,7 @@ namespace bookmark_manager.API.Controllers
 
             _context.Entry(bookmark).State = EntityState.Modified;
 
-            if(await _context.SaveChangesAsync() > 0)
+            if (await _context.SaveChangesAsync() > 0)
                 return NoContent();
 
             throw new Exception("Failed to update bookmark");
@@ -107,7 +112,7 @@ namespace bookmark_manager.API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var bookmark = await _context.Bookmarks.Include(b => b.Category).SingleOrDefaultAsync(x => x.BookmarkId == id &&
+            var bookmark = await _context.Bookmarks.Include(b => b.Category).Include(b => b.Tags).SingleOrDefaultAsync(x => x.BookmarkId == id &&
                  x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             if (bookmark == null)
@@ -115,7 +120,7 @@ namespace bookmark_manager.API.Controllers
 
             _context.Bookmarks.Remove(bookmark);
 
-            if(await _context.SaveChangesAsync() > 0)
+            if (await _context.SaveChangesAsync() > 0)
                 return Ok();
 
             throw new Exception("Failed to remove bookmark");
