@@ -22,7 +22,6 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
   folderSubscription!: Subscription;
   errorMessage = '';
-  allBookmarks: Bookmark[] = [];
   bookmarks: Bookmark[] = [];
   params: Params;
   folders: Folder[] = [];
@@ -33,13 +32,12 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.subscription =
       this.bookmarkService.getBookmarks().subscribe({
         next: bookmarks => {
-          this.allBookmarks = bookmarks;
           this.route.queryParams.subscribe(params => {
             if (params.category){
               this.bookmarks = [];
-              this.bookmarks = this.allBookmarks.filter(b => b.category?.name == params.category);
+              this.bookmarks = bookmarks.filter(b => b.category?.name == params.category);
             }else{
-              this.bookmarks = this.allBookmarks;
+              this.bookmarks = bookmarks;
             }
           });
         },

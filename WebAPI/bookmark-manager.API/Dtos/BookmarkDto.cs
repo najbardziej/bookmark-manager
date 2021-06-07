@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace bookmark_manager.API.Dtos
 {
@@ -12,6 +13,7 @@ namespace bookmark_manager.API.Dtos
         public string Content { get; set; }
         [Required]
         public string Url { get; set; }
+        public DateTime AddedAt { get; set; }
         public CategoryInBookmarkDto Category { get; set; }
     }
 }

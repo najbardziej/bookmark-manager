@@ -21,14 +21,15 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      passwordConf: ['', Validators.required]
+      passwordConf: ['', Validators.required],
+      areTermsAccepted: [false, Validators.requiredTrue]
     }, {validators: this.passwordMatchValidator});
   }
   registerUser(): void{
     this.user = Object.assign({}, this.registerForm.value);
     this.authService.register(this.user)
       .subscribe(data => {
-        this.router.navigate(['signin']);
+        this.router.navigate(['bookmarks']);
         console.log('Successful');
       });
   }
