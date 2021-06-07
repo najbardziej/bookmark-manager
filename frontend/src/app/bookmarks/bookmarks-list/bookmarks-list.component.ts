@@ -69,7 +69,12 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       if (params.category) {
         this.editFolder = this.folders.filter(f => f.name === params.category)[0];
-      }
+        if (!this.editFolder) {
+          this.folders.forEach(f1 => {
+            this.editFolder = f1.subcategories.filter(f => f.name === params.category)[0] ?? this.editFolder;
+          });
+          }
+        }
     });
     this.contentModal.show();
   }
