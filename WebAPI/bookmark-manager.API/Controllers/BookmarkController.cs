@@ -62,8 +62,9 @@ namespace bookmark_manager.API.Controllers
                 return BadRequest("Could not find a user");
 
             Category category = null;
-            //if (bookmarkDto.Category != null)
-            //    category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Category.Id);
+            
+            if (bookmarkDto.Category != null)
+                category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Category.Id);
 
             var tags = (await _context.Tags.ToListAsync())
                 .Where(t => bookmarkDto.Tags.ToList().Select(x => x.Id).Any(i => t.Id == i)).ToList();
