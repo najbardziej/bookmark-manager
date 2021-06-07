@@ -10,7 +10,7 @@ export class BookmarksGuard implements CanActivate {
   constructor(private router: Router){}
 
   canActivate(): boolean {
-    if (localStorage.getItem('user') !== null) {
+    if (localStorage.getItem('user') === null) {
       this.router.navigate(['/signin']);
     }
     return true;
