@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FolderListComponent } from './folder-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 describe('FolderListComponent', () => {
   let component: FolderListComponent;
@@ -11,7 +12,7 @@ describe('FolderListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ FolderListComponent ],
-      imports: [ ReactiveFormsModule, HttpClientModule, FormsModule ]
+      imports: [ ReactiveFormsModule, HttpClientModule, FormsModule, MDBBootstrapModule.forRoot() ]
     })
     .compileComponents();
   });

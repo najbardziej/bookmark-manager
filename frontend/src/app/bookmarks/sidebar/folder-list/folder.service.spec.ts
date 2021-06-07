@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { FolderService } from './folder.service';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('FolderServiceService', () => {
   let service: FolderService;

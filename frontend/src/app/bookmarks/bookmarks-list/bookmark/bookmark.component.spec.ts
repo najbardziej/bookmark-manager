@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ConvertUrlToDomainPipe } from '../convert-url-to-domain.pipe';
 import { BookmarkComponent } from './bookmark.component';
 
 describe('BookmarkComponent', () => {
@@ -8,7 +8,7 @@ describe('BookmarkComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BookmarkComponent ]
+      declarations: [ BookmarkComponent, ConvertUrlToDomainPipe ],
     })
     .compileComponents();
   });

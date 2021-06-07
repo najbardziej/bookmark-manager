@@ -11,7 +11,7 @@ describe('BookmarksComponent', () => {
   beforeEach(async () => {
     return await TestBed.configureTestingModule({
       declarations: [BookmarksComponent],
-      imports: [ReactiveFormsModule, HttpClientModule, FormsModule]
+      imports: [ReactiveFormsModule, HttpClientModule, FormsModule],
     })
       .compileComponents();
   });
