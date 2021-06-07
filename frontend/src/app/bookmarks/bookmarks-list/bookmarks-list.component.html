@@ -16,7 +16,6 @@
       </div>
       <div class="modal-body">
         <form action="#" method="post">
-          <!--            TODO: set correct action and method or set this in Angular component -->
           <input mdbInput type="hidden" id="bookmarkId" class="form-control" name="id" [(ngModel)]="editId" [value]="editedBookmark?.bookmarkId">
           <div class="md-form">
             <input mdbInput type="text" id="bookmarkTitle" class="form-control" name="title" [(ngModel)]="editTitle" [value]="editedBookmark?.title">
@@ -30,7 +29,7 @@
             <textarea class="md-textarea form-control" name="content" [(ngModel)]="editContent" rows="2" id="input_text" type="text" length="120" mdbCharCounter mdbInput [value]="editedBookmark?.content" ></textarea>
             <label for="input_text">Short note for link</label>
           </div>
-          <div>
+          <div class="d-none">
             <button *ngFor="let tag of editedBookmark?.tags" type="button" class="btn btn-light tag btn-sm">{{tag.name}}</button>
             <div class="btn-group" mdbDropdown>
               <button mdbDropdownToggle type="button" mdbBtn color="light" class="dropdown-toggle btn-sm waves-light tag"
@@ -47,7 +46,6 @@
       </div>
       <div class="modal-footer">
         <button *ngIf="editedBookmark?.bookmarkId != null" type="button" mdbBtn color="red" class="waves-light" (click)="onDeleteButtonClicked()" mdbWavesEffect>Delete bookmark</button>
-        <!--          <button type="button" mdbBtn color="light" class="waves-light" (click)="content.hide()" mdbWavesEffect>Close</button>-->
         <button type="button" mdbBtn color="primary" class="waves-light" mdbWavesEffect (click)="editBookmark()">Save changes</button>
       </div>
     </div>
