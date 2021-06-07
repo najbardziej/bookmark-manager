@@ -64,7 +64,7 @@
       </div>
       <div class="d-flex justify-content-around">
         <div>
-          <mdb-checkbox formControlName="areTermsAccepted" [default]="true">I accept the Terms of Service</mdb-checkbox>
+          <mdb-checkbox formControlName="areTermsAccepted">I accept the Terms of Service</mdb-checkbox>
         </div>
         <button [disabled]="!registerForm.valid" type="button" mdbBtn color="primary" (click)="registerUser()" mdbWavesEffect>SIGN IN</button>
       </div>
