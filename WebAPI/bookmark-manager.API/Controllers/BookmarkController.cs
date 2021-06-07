@@ -56,45 +56,32 @@ namespace bookmark_manager.API.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateBookmark(BookmarkDto bookmarkDto)
         {
-
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
             if (user == null)
-                return BadRequest("Cound not find a user");
+                return BadRequest("Could not find a user");
 
             Category category = null;
-            if (bookmarkDto.Category != null)
-                category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Category.Id);
-            
-            List<Tag> tags = new List<Tag>();
-            if (bookmarkDto.Tags.Any())
-            {
-                foreach(TagDto tag in bookmarkDto.Tags)
-                {
-                    var tagToAdd = await _context.Tags.SingleOrDefaultAsync(t => t.Id == tag.Id);
-                    if (tagToAdd != null)
-                        tags.Add(tagToAdd);
-                }
-            }
+            //if (bookmarkDto.Category != null)
+            //    category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Category.Id);
 
+            var tags = (await _context.Tags.ToListAsync())
+                .Where(t => bookmarkDto.Tags.ToList().Select(x => x.Id).Any(i => t.Id == i)).ToList();
 
-            var bookmarkToAdd = new Bookmark
+            var bookmark = new Bookmark
             {
                 Title = bookmarkDto.Title,
                 Content = bookmarkDto.Content,
                 Url = bookmarkDto.Url,
                 User = user,
+                Tags = tags,
+                Category = category,
             };
 
-            if (category != null)
-                bookmarkToAdd.Category = category;
-            if (tags != null)
-                bookmarkToAdd.Tags = tags;
-
-            await _context.Bookmarks.AddAsync(bookmarkToAdd);
+            await _context.Bookmarks.AddAsync(bookmark);
 
             if (await _context.SaveChangesAsync() > 0)
-                return CreatedAtAction(nameof(GetUserBookmarkById), new { userId = user.UserId, id = bookmarkToAdd.BookmarkId }, bookmarkDto);
+                return CreatedAtAction(nameof(GetUserBookmarkById), new { userId = user.UserId, id = bookmark.BookmarkId }, bookmarkDto);
 
             throw new Exception("Failed to create bookmark");
         }
