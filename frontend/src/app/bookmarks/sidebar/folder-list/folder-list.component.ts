@@ -60,7 +60,6 @@ export class FolderListComponent implements OnInit, OnDestroy {
     this.parentFolder = null;
     this.editedFolder = $event;
     this.editName = $event.name;
-    // this.editNodeLevel = $event.nodeLevel;
     this.editId  = $event.id;
     this.content.show();
   }
@@ -80,7 +79,6 @@ export class FolderListComponent implements OnInit, OnDestroy {
 
   editFolder(): void {
     this.editedFolder.name = this.editName;
-    this.editedFolder.nodeLevel = this.editNodeLevel;
     this.editedFolder.id = this.editId;
     if (this.editId) {
       this.folderService.editFolder(this.editedFolder)
