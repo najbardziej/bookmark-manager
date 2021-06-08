@@ -78,7 +78,10 @@ namespace bookmark_manager.API.Controllers
         [HttpPut("{tagId}")]
         public async Task<ActionResult> UpdateCategory( int tagId, TagDto tagDto)
         {
+            var tagExists = await _context.Tags.SingleOrDefaultAsync(t => t.Name.Equals(tagDto.Name));
 
+            if(tagExists != null)
+                return BadRequest("Tag with that name already exists");
             var tag = await _context.Tags.Include(t => t.User).SingleOrDefaultAsync(t => t.Id == tagId &&
                                                         t.User.UserId == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value));
 
