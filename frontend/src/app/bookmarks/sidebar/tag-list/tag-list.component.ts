@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from "rxjs";
 import {Folder} from "../../folder";
 import {FolderService} from "../folder-list/folder.service";
@@ -11,9 +11,12 @@ import {TagService} from './tag.service';
   styleUrls: ['./tag-list.component.scss']
 })
 export class TagListComponent implements OnInit, OnDestroy {
+  @ViewChild('content', { static: true }) public content: any;
   subscription!: Subscription;
   errorMessage = '';
   tags: Tag[] = [];
+  newTagName = '';
+  public editedTag: Tag;
 
   constructor(private tagService: TagService) { }
 
@@ -31,4 +34,20 @@ export class TagListComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  onAddButtonClicked($event: Tag): void {
+    document.body.appendChild(document.getElementById('tagModal'));
+    this.content.show();
+  }
+
+  addTag(): void {
+    this.editedTag = ({} as Tag);
+    this.editedTag.name = this.newTagName;
+    if (this.newTagName){
+      this.tagService.addTag(this.editedTag)
+        .subscribe(data => {
+          console.log('Successful');
+          this.tags.push(this.editedTag);
+        });
+    }
+  }
 }

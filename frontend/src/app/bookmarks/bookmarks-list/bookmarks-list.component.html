@@ -31,14 +31,13 @@
           </div>
           <div class="md-form">
             <select name="folder" class="form-select browser-default custom-select" [(ngModel)]="editFolder">
-<!--              <option *ngFor="let folder of folders" [ngValue]="folder" >{{folder.name}}</option>-->
               <optgroup *ngFor="let folder of folders" [label]="folder.name">
                 <option [ngValue]="folder">{{folder.name}}</option>
                 <option *ngFor="let subfolder of folder.subcategories" [ngValue]="subfolder" class="pl-5">&emsp;{{subfolder.name}}</option>
               </optgroup>
             </select>
           </div>
-          <div class="d-none">
+          <div>
             <button *ngFor="let tag of editedBookmark?.tags" type="button" class="btn btn-light tag btn-sm">{{tag.name}}</button>
             <div class="btn-group" mdbDropdown>
               <button mdbDropdownToggle type="button" mdbBtn color="light" class="dropdown-toggle btn-sm waves-light tag"

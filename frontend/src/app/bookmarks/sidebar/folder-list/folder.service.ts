@@ -9,7 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class FolderService {
-  private folderUrl = environment.apiUrl + 'category';
+  private folderUrl = environment.apiUrl + 'Category';
 
   constructor(private http: HttpClient) { }
 
