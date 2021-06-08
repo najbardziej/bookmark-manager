@@ -102,6 +102,10 @@ namespace bookmark_manager.API.Controllers
 
             _mapper.Map(bookmarkDto, bookmark);
 
+            if(bookmarkDto.Category != null)
+                bookmark.Category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == bookmarkDto.Category.Id);
+
+            bookmarkDto.Tags.ForEach(t => bookmark.Tags.Add(_context.Tags.SingleOrDefault(x => x.Id == t.Id)));
             _context.Entry(bookmark).State = EntityState.Modified;
 
             if (await _context.SaveChangesAsync() > 0)

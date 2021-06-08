@@ -1,21 +1,47 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {Tag} from '../../tag';
+import { environment } from 'src/environments/environment';
+import {Folder} from "../../folder";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TagService {
-  private folderUrl = 'api/Tags/tags.json';
+  private tagUrl = environment.apiUrl + 'tag';
 
   constructor(private http: HttpClient) { }
 
   getTags(): Observable<Tag[]> {
-    return this.http.get<Tag[]>(this.folderUrl).pipe(
+    return this.http.get<Tag[]>(this.tagUrl).pipe(
       tap(data => console.log('Tag log:', JSON.stringify(data))),
       catchError(this.handleError)
+    );
+  }
+
+  addTag(model: Tag): Observable<Tag> {
+    return this.http.post<Tag>(`${this.tagUrl}`, model).pipe(
+      map((response: Tag) =>  {
+        return response;
+      })
+    );
+  }
+
+  editTag(model: Tag): Observable<Tag> {
+    return this.http.put<Tag>(`${this.tagUrl}/${model.id}`, model).pipe(
+      map((response: Tag) =>  {
+        return response;
+      })
+    );
+  }
+
+  deleteTag(model: Tag): Observable<Tag> {
+    return this.http.delete<Tag>(`${this.tagUrl}/${model.id}`).pipe(
+      map((response: Tag) =>  {
+        return response;
+      })
     );
   }
 

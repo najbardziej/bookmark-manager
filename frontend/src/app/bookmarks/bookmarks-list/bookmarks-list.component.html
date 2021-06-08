@@ -30,20 +30,22 @@
             <label for="input_text">Short note for link</label>
           </div>
           <div class="md-form">
-            <select name="folder" class="form-select" [(ngModel)]="editFolder" >
-              <option *ngFor="let folder of folders" [ngValue]="folder" >{{folder.name}}</option>
+            <select name="folder" class="form-select browser-default custom-select" [(ngModel)]="editFolder">
+              <optgroup *ngFor="let folder of folders" [label]="folder.name">
+                <option [ngValue]="folder">{{folder.name}}</option>
+                <option *ngFor="let subfolder of folder.subcategories" [ngValue]="subfolder" class="pl-5">&emsp;{{subfolder.name}}</option>
+              </optgroup>
             </select>
           </div>
-          <div class="d-none">
-            <button *ngFor="let tag of editedBookmark?.tags" type="button" class="btn btn-light tag btn-sm">{{tag.name}}</button>
+          <div>
+            <button *ngFor="let tag of editedBookmark?.tags" type="button" class="btn btn-light tag btn-sm" [value]="tag.name" (click)="deleteTagFromBookmark($event)" >{{tag.name}}</button>
             <div class="btn-group" mdbDropdown>
               <button mdbDropdownToggle type="button" mdbBtn color="light" class="dropdown-toggle btn-sm waves-light tag"
                       mdbWavesEffect>
                 <span class="material-icons small">add</span> Add tag
               </button>
               <div class="dropdown-menu dropdown-primary">
-                <a *ngFor="let tag of editedBookmark?.tags" class="dropdown-item" href="#">{{tag.name}}</a>
-                <!--                  TODO: change "let tag of tags" for all user tags -->
+                <button *ngFor="let tag of tags" [value]="tag.name" class="dropdown-item" (click)="addTagToBookmark($event)">{{tag.name}}</button>
               </div>
             </div>
           </div>
