@@ -13,7 +13,7 @@
     <p class="card-subtitle">{{bookmark?.content}}</p>
     <div class="d-flex justify-content-between">
       <div>
-        <button *ngFor="let tag of bookmark?.tags" type="button" class="btn btn-light tag btn-sm">{{tag?.name}}</button>
+        <button *ngFor="let tag of bookmark?.tags" type="button" class="btn btn-light tag btn-sm" [routerLink]="['/bookmarks']" [queryParams]="{tag: tag.name}">{{tag?.name}}</button>
       </div>
       <button type="button" mdbBtn color="primary" class="btn btn-sm edit-button waves-light" (click)="onClick()" mdbWavesEffect>
         <!--          TODO: pass correct bookmark id (change 1. argument in show())-->

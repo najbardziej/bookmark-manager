@@ -38,7 +38,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
         next: bookmarks => {
           this.route.queryParams.subscribe(params => {
             if (params.category){
-              this.getFolders()
+              this.getFolders();
               this.bookmarks = [];
               this.bookmarks = this.prepareBookmark(bookmarks, params.category);
               return;
@@ -71,6 +71,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.editUrl = $event.url;
     this.editContent = $event.content;
     this.editId  = $event.bookmarkId;
+    this.getTags();
     this.route.queryParams.subscribe(params => {
       if (params.category) {
         this.editFolder = this.folders.filter(f => f.name === params.category)[0];

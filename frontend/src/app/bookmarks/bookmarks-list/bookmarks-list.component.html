@@ -38,7 +38,7 @@
             </select>
           </div>
           <div>
-            <button *ngFor="let tag of editedBookmark?.tags" type="button" class="btn btn-light tag btn-sm" [value]="tag.name" (click)="deleteTagFromBookmark($event)">{{tag.name}}</button>
+            <button *ngFor="let tag of editedBookmark?.tags" type="button" class="btn btn-light tag btn-sm" [value]="tag.name" (click)="deleteTagFromBookmark($event)" >{{tag.name}}</button>
             <div class="btn-group" mdbDropdown>
               <button mdbDropdownToggle type="button" mdbBtn color="light" class="dropdown-toggle btn-sm waves-light tag"
                       mdbWavesEffect>
