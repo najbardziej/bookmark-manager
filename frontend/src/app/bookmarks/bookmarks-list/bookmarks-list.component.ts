@@ -35,7 +35,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
           this.route.queryParams.subscribe(params => {
             if (params.category){
               this.bookmarks = [];
-              this.bookmarks = bookmarks.filter(b => b.category?.name == params.category);
+              this.bookmarks = this.prepareBookmark(bookmarks, params.category);
             }else{
               this.bookmarks = bookmarks;
             }
@@ -101,6 +101,10 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.editedBookmark.category = this.editFolder;
     console.log(JSON.stringify(this.editedBookmark));
     if (this.editId) {
+      if (this.editedBookmark.category) {
+        console.log(this.editedBookmark);
+        this.prepareCategory(this.editedBookmark.category);
+      }
       this.bookmarkService.editBookmark(this.editedBookmark)
         .subscribe(data => {
           console.log('Successful');
@@ -113,5 +117,46 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       window.location.reload();
     }
     this.contentModal.hide();
+  }
+
+  private prepareCategory(category: Folder): Folder|null {
+    for (const folder of this.folders) {
+      if (folder.subcategories){
+        for (const subcategory  of folder.subcategories) {
+          if (subcategory.id === category.id) {
+            folder.subcategories.length = 0;
+            folder.subcategories.push(category);
+            return folder;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  // tslint:disable-next-line:typedef
+  private prepareBookmark(bookmarks: Bookmark[], category: any): Bookmark[] {
+    let bookmarksToShow: Bookmark[] = [];
+    for (const bookmark of bookmarks) {
+      if (bookmark.category.name === category) {
+        bookmarksToShow.push(bookmark); }
+      if (this.subcategoryBelongsToCategory(bookmark.category.id, category)) {
+        bookmarksToShow.push(bookmark);
+      }
+    }
+    return bookmarksToShow;
+  }
+
+  private subcategoryBelongsToCategory(id: number, enteredCategory:String): boolean {
+    for (const folder of this.folders) {
+      if (folder.subcategories.length > 0 && folder.name === enteredCategory) {
+        for (const subcategory of folder.subcategories) {
+          if (subcategory.id === id) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 }
