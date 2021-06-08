@@ -3,12 +3,13 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Bookmark} from '../bookmark';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookmarkService {
-  private bookmarkUrl = 'https://localhost:5001/Bookmark';
+  private bookmarkUrl = `${environment.apiUrl}Bookmark`;
 
   constructor(private http: HttpClient) { }
 
@@ -20,6 +21,9 @@ export class BookmarkService {
   }
 
   addBookmark(model: Bookmark): Observable<Bookmark> {
+    if (model.category == undefined)
+    model.category = null
+
     return this.http.post<Bookmark>(`${this.bookmarkUrl}`, model).pipe(
       map((response: Bookmark) =>  {
         return response;

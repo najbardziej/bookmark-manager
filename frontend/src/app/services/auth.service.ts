@@ -27,6 +27,7 @@ export class AuthService{
   }
 
   private saveUser(model: User, url: string): Observable<User>{
+    console.log(this.baseUrl + url)
     return this.httpClient.post<User>(this.baseUrl + url, model).pipe(
       map((response: User) =>  {
         const user = response;
