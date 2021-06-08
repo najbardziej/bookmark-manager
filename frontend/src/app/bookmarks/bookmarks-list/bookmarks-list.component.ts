@@ -99,7 +99,6 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.editedBookmark.content = this.editContent;
     this.editedBookmark.url = this.editUrl;
     this.editedBookmark.category = this.editFolder;
-    
     console.log(JSON.stringify(this.editedBookmark));
     if (this.editId) {
       this.bookmarkService.editBookmark(this.editedBookmark)
