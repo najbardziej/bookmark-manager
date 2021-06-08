@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start-nopwa": "ng serve",
-    "start": "ng build --prod && http-server -p 8080 -c-1 dist/frontend",
+    "start": "ng serve",
+    "start-pwa": "ng build --prod && http-server -p 8080 -c-1 dist/frontend",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

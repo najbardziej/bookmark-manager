@@ -67,6 +67,8 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   onEditButtonClicked($event: Bookmark): void {
     document.body.appendChild(document.getElementById('exampleModal'));
     this.editedBookmark = $event;
+    if (!this.editedBookmark.tags)
+      this.editedBookmark.tags = [];
     this.editTitle = $event.title;
     this.editUrl = $event.url;
     this.editContent = $event.content;
@@ -82,15 +84,6 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
           }
         }
     });
-    this.contentModal.show();
-  }
-
-  onAddButtonClicked($event: Bookmark): void {
-    this.editedBookmark = $event;
-    this.editTitle = $event.title;
-    this.editUrl = $event.url;
-    this.editContent = $event.content;
-    this.editId = $event.bookmarkId;
     this.contentModal.show();
   }
 

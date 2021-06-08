@@ -32,7 +32,7 @@
 
 <ng-template #recursiveListTmpl let-list="list">
   <li class="py-0 list-unstyled tag-entry" *ngFor="let tag of list">
-    <a [routerLink]="['/bookmarks']" [queryParams]="{category: tag.name}"  class="text-light">
+    <a [routerLink]="['/bookmarks']" [queryParams]="{tag: tag.name}"  class="text-light">
       <span class="material-icons align-middle">label</span> {{tag.name}}
     </a>
     <div class="float-right edit-tag-options">
