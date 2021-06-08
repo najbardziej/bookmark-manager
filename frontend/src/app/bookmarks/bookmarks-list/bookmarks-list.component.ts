@@ -38,30 +38,25 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
         next: bookmarks => {
           this.route.queryParams.subscribe(params => {
             if (params.category){
+              this.getFolders()
               this.bookmarks = [];
               this.bookmarks = this.prepareBookmark(bookmarks, params.category);
-            }else{
+              return;
+            }if (params.tag){
+              this.getTags();
+              this.bookmarks = [];
+              this.bookmarks = this.prepareBookmarkByTag(bookmarks, params.tag);
+              return;
+            }
+            else{
               this.bookmarks = bookmarks;
             }
           });
         },
         error: err => this.errorMessage = err
       });
-    this.folderSubscription =
-      this.folderService.getFolders().subscribe({
-        next: folders => {
-          this.folders = folders;
-        },
-        error: err => this.errorMessage = err
-      });
-    this.tagSubscription =
-      this.tagService.getTags().subscribe({
-        next: tags => {
-          this.tags = tags;
-          console.log(this.tags);
-        },
-        error: err => this.errorMessage = err
-      });
+    this.getFolders();
+    this.getTags();
   }
 
   ngOnDestroy(): void {
@@ -111,7 +106,6 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.editedBookmark.content = this.editContent;
     this.editedBookmark.url = this.editUrl;
     this.editedBookmark.category = this.editFolder;
-    console.log(this.editedBookmark)
     console.log(JSON.stringify(this.editedBookmark));
     if (this.editId) {
       this.bookmarkService.editBookmark(this.editedBookmark)
@@ -140,6 +134,18 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     return bookmarksToShow;
   }
 
+  private prepareBookmarkByTag(bookmarks: Bookmark[], tag: any): Bookmark[] {
+    const bookmarksToShow: Bookmark[] = [];
+    for (const bookmark of bookmarks) {
+      for (const tag1 of bookmark.tags) {
+        if (tag1.name.toLowerCase() === tag.toLowerCase()){
+          bookmarksToShow.push(bookmark);
+        }
+      }
+    }
+    return bookmarksToShow;
+  }
+
   private subcategoryBelongsToCategory(id: number, enteredCategory:String): boolean {
     for (const folder of this.folders) {
       if (folder.subcategories.length > 0 && folder.name === enteredCategory) {
@@ -158,7 +164,6 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     const buttonValue = button.value;
     const newTag: Tag = ({} as Tag);
     this.editedBookmark.tags.push(this.searchTag(buttonValue));
-    console.log(this.editedBookmark.tags);
   }
 
   deleteTagFromBookmark(event: Event): void {
@@ -178,5 +183,25 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       }
     }
     return null;
+  }
+
+  private getTags(): void {
+    this.tagSubscription =
+      this.tagService.getTags().subscribe({
+        next: tags => {
+          this.tags = tags;
+        },
+        error: err => this.errorMessage = err
+      });
+  }
+
+  private getFolders(): void {
+    this.folderSubscription =
+      this.folderService.getFolders().subscribe({
+        next: folders => {
+          this.folders = folders;
+        },
+        error: err => this.errorMessage = err
+      });
   }
 }

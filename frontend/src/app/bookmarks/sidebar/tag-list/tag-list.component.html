@@ -1,6 +1,6 @@
 <!--<p>tag-list works!</p>-->
 <div class="d-flex flex-row justify-content-between mt-3">
-  <p class="menu-group text-white-50 m-0">My folders</p>
+  <p class="menu-group text-white-50 m-0">My Tags</p>
   <a class="btn btn-link text-light p-0 m-0 px-2"
      (click)="onAddButtonClicked(null)">
     <span class="material-icons align-middle">label</span>
@@ -8,7 +8,7 @@
 </div>
 <ul class="m-0 p-0 list-unstyled" *ngFor="let tag of tags">
   <li class="py-0">
-    <a href="#" class="text-light">
+    <a [routerLink]="['/bookmarks']" [queryParams]="{tag: tag.name}" class="text-light">
       <span class="material-icons align-middle">label</span> {{tag.name}}
     </a>
     <a class="btn btn-link text-light p-0 m-0 px-2 float-right"
