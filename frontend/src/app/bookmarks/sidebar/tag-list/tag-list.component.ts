@@ -66,8 +66,28 @@ export class TagListComponent implements OnInit, OnDestroy {
       this.tagService.editTag(this.editedTag)
         .subscribe(data => {
           console.log('Successful');
-          window.location.reload();
         });
+    }
+    this.content.hide();
+  }
+
+  removeTag(): void {
+    this.editedTag = ({} as Tag);
+    this.editedTag.id = this.newTagId;
+    this.tagService.deleteTag(this.editedTag)
+      .subscribe(data => {
+        console.log('Successful');
+        this.removeTagFromList();
+      });
+    this.content.hide();
+  }
+
+  private removeTagFromList(): void{
+    for(const tagsKey in this.tags) {
+      console.log(this.tags[tagsKey]);
+      if (this.tags[tagsKey].id === this.editedTag.id){
+        this.tags.splice(Number(tagsKey), 1);
+      }
     }
   }
 }

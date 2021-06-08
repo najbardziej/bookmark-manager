@@ -30,8 +30,15 @@ export class TagService {
   }
 
   editTag(model: Tag): Observable<Tag> {
-    console.log(model);
     return this.http.put<Tag>(`${this.tagUrl}/${model.id}`, model).pipe(
+      map((response: Tag) =>  {
+        return response;
+      })
+    );
+  }
+
+  deleteTag(model: Tag): Observable<Tag> {
+    return this.http.delete<Tag>(`${this.tagUrl}/${model.id}`).pipe(
       map((response: Tag) =>  {
         return response;
       })

@@ -1,28 +1,54 @@
-<!--<p>tag-list works!</p>-->
+<!--<div class="d-flex flex-row justify-content-between mt-3">-->
+<!--  <p class="menu-group text-white-50 m-0">My Tags</p>-->
+<!--  <a class="btn btn-link text-light p-0 m-0 px-2"-->
+<!--     (click)="onAddButtonClicked(null)">-->
+<!--    <span class="material-icons align-middle">label</span>-->
+<!--  </a>-->
+<!--</div>-->
+<!--<ul class="m-0 p-0 list-unstyled" *ngFor="let tag of tags">-->
+<!--  <li class="py-0">-->
+<!--    <a [routerLink]="['/bookmarks']" [queryParams]="{tag: tag.name}" class="text-light">-->
+<!--      <span class="material-icons align-middle">label</span> {{tag.name}}-->
+<!--    </a>-->
+<!--    <a class="btn btn-link text-light p-0 m-0 px-2 float-right"-->
+<!--       (click)="onEditButtonClicked(tag)">-->
+<!--      <i class="fas fa-pen-square" style="font-size: 1rem"></i>-->
+<!--    </a>-->
+<!--  </li>-->
+<!--</ul>-->
+
 <div class="d-flex flex-row justify-content-between mt-3">
-  <p class="menu-group text-white-50 m-0">My Tags</p>
+  <p class="menu-group text-white-50 m-0">My tags</p>
   <a class="btn btn-link text-light p-0 m-0 px-2"
      (click)="onAddButtonClicked(null)">
     <span class="material-icons align-middle">label</span>
   </a>
 </div>
-<ul class="m-0 p-0 list-unstyled" *ngFor="let tag of tags">
-  <li class="py-0">
-    <a [routerLink]="['/bookmarks']" [queryParams]="{tag: tag.name}" class="text-light">
+<ul class="nav-menu m-0 p-0 list-unstyled">
+  <ng-container
+    *ngTemplateOutlet="recursiveListTmpl; context:{ list: tags }"
+  ></ng-container>
+</ul>
+
+<ng-template #recursiveListTmpl let-list="list">
+  <li class="py-0 list-unstyled tag-entry" *ngFor="let tag of list">
+    <a [routerLink]="['/bookmarks']" [queryParams]="{category: tag.name}"  class="text-light">
       <span class="material-icons align-middle">label</span> {{tag.name}}
     </a>
-    <a class="btn btn-link text-light p-0 m-0 px-2 float-right"
-       (click)="onEditButtonClicked(tag)">
-      <i class="fas fa-pen-square" style="font-size: 1rem"></i>
-    </a>
+    <div class="float-right edit-tag-options">
+      <a class="btn btn-link text-light p-0 m-0 px-2"
+         (click)="onEditButtonClicked(tag)">
+        <i class="fas fa-pen-square" style="font-size: 1rem"></i>
+      </a>
+    </div>
   </li>
-</ul>
+</ng-template>
 
 <div mdbModal #content="mdbModal" class="modal fade" id="tagModal" tabindex="-1" role="dialog" aria-labelledby="tagModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="folderModalLabel">Edit Tag</h4>
+        <h4 class="modal-title" id="tagModalLabel">Edit Tag</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="content.hide()">
           <span aria-hidden="true">×</span>
         </button>
@@ -37,6 +63,7 @@
         </form>
       </div>
       <div class="modal-footer">
+        <button *ngIf="action === 'edit'" type="button" mdbBtn color="red" class="waves-light" (click)="removeTag()" mdbWavesEffect>Delete tag</button>
         <button type="button" mdbBtn color="primary" class="waves-light" mdbWavesEffect (click)="addTag()">Save changes</button>
       </div>
     </div>
