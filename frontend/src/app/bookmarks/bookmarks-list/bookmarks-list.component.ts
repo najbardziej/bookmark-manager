@@ -5,6 +5,8 @@ import {Bookmark} from '../bookmark';
 import { ActivatedRoute, Params } from '@angular/router';
 import {Folder} from '../folder';
 import {FolderService} from '../sidebar/folder-list/folder.service';
+import {TagService} from '../sidebar/tag-list/tag.service';
+import {Tag} from '../tag';
 
 @Component({
   selector: 'bm-bookmarks-list',
@@ -21,12 +23,14 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   editFolder: Folder;
   subscription!: Subscription;
   folderSubscription!: Subscription;
+  tagSubscription!: Subscription;
   errorMessage = '';
   bookmarks: Bookmark[] = [];
   params: Params;
   folders: Folder[] = [];
+  tags: Tag[] = [];
 
-  constructor(private bookmarkService: BookmarkService, private folderService: FolderService, private route: ActivatedRoute) { }
+  constructor(private bookmarkService: BookmarkService, private folderService: FolderService, private tagService: TagService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.subscription =
@@ -47,6 +51,14 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       this.folderService.getFolders().subscribe({
         next: folders => {
           this.folders = folders;
+        },
+        error: err => this.errorMessage = err
+      });
+    this.tagSubscription =
+      this.tagService.getTags().subscribe({
+        next: tags => {
+          this.tags = tags;
+          console.log(this.tags);
         },
         error: err => this.errorMessage = err
       });
@@ -139,5 +151,32 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  addTagToBookmark(event: Event): void {
+    const button = event.target as HTMLButtonElement;
+    const buttonValue = button.value;
+    const newTag: Tag = ({} as Tag);
+    this.editedBookmark.tags.push(this.searchTag(buttonValue));
+    console.log(this.editedBookmark.tags);
+  }
+
+  deleteTagFromBookmark(event: Event): void {
+    const button = event.target as HTMLButtonElement;
+    const buttonValue = button.value;
+    for (const tagsKey in this.editedBookmark.tags) {
+      if (this.editedBookmark.tags[tagsKey].name === buttonValue){
+        this.editedBookmark.tags.splice(Number(tagsKey), 1 + Number(tagsKey));
+      }
+    }
+  }
+
+  searchTag(tagName: string): Tag | null {
+    for (const tag of this.tags) {
+      if (tag.name === tagName){
+        return tag;
+      }
+    }
+    return null;
   }
 }

@@ -38,15 +38,14 @@
             </select>
           </div>
           <div>
-            <button *ngFor="let tag of editedBookmark?.tags" type="button" class="btn btn-light tag btn-sm">{{tag.name}}</button>
+            <button *ngFor="let tag of editedBookmark?.tags" type="button" class="btn btn-light tag btn-sm" [value]="tag.name" (click)="deleteTagFromBookmark($event)">{{tag.name}}</button>
             <div class="btn-group" mdbDropdown>
               <button mdbDropdownToggle type="button" mdbBtn color="light" class="dropdown-toggle btn-sm waves-light tag"
                       mdbWavesEffect>
                 <span class="material-icons small">add</span> Add tag
               </button>
               <div class="dropdown-menu dropdown-primary">
-                <a *ngFor="let tag of editedBookmark?.tags" class="dropdown-item" href="#">{{tag.name}}</a>
-                <!--                  TODO: change "let tag of tags" for all user tags -->
+                <button *ngFor="let tag of tags" [value]="tag.name" class="dropdown-item" (click)="addTagToBookmark($event)">{{tag.name}}</button>
               </div>
             </div>
           </div>

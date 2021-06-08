@@ -10,7 +10,7 @@ import {Folder} from "../../folder";
   providedIn: 'root'
 })
 export class TagService {
-  private tagUrl = environment.apiUrl + 'Tag';
+  private tagUrl = environment.apiUrl + 'tag';
 
   constructor(private http: HttpClient) { }
 

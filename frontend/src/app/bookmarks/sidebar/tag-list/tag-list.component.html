@@ -29,6 +29,7 @@
       </div>
       <div class="modal-body">
         <form action="#" method="post">
+          <input mdbInput type="hidden" id="id" class="form-control" name="id" [(ngModel)]="newTagId" [value]="editedTag?.id">
           <div class="md-form">
             <input mdbInput type="text" id="name" class="form-control" name="title" [(ngModel)]="newTagName" [value]="editedTag?.name">
             <label for="name">Name</label>
