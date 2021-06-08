@@ -53,8 +53,12 @@ namespace bookmark_manager.API.Controllers
         public async Task<ActionResult> CreateTag(int tagId, TagDto tagDto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Id == tagId &&
+            var tag = await _context.Tags.SingleOrDefaultAsync(t => t.Name.Equals(tagDto.Name) &&
                 t.User.UserId == userId);
+            
+            if(tag != null)
+                return BadRequest("Tag with that name already exists!");
+        
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == userId);
 
             var tagToAdd = new Tag
