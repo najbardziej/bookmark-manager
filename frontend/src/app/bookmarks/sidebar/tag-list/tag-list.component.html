@@ -11,6 +11,10 @@
     <a href="#" class="text-light">
       <span class="material-icons align-middle">label</span> {{tag.name}}
     </a>
+    <a class="btn btn-link text-light p-0 m-0 px-2 float-right"
+       (click)="onEditButtonClicked(tag)">
+      <i class="fas fa-pen-square" style="font-size: 1rem"></i>
+    </a>
   </li>
 </ul>
 

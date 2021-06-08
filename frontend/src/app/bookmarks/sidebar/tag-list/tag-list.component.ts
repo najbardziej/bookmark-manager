@@ -16,7 +16,9 @@ export class TagListComponent implements OnInit, OnDestroy {
   errorMessage = '';
   tags: Tag[] = [];
   newTagName = '';
+  newTagId: number;
   public editedTag: Tag;
+  action = '';
 
   constructor(private tagService: TagService) { }
 
@@ -36,17 +38,35 @@ export class TagListComponent implements OnInit, OnDestroy {
 
   onAddButtonClicked($event: Tag): void {
     document.body.appendChild(document.getElementById('tagModal'));
+    this.action = 'add';
+    this.content.show();
+  }
+
+  onEditButtonClicked($event: Tag): void {
+    document.body.appendChild(document.getElementById('tagModal'));
+    this.newTagName = $event.name;
+    this.newTagId = $event.id;
+    this.action = 'edit';
     this.content.show();
   }
 
   addTag(): void {
     this.editedTag = ({} as Tag);
     this.editedTag.name = this.newTagName;
-    if (this.newTagName){
+    if (!this.newTagName) { return; }
+    if (this.action === 'add'){
       this.tagService.addTag(this.editedTag)
         .subscribe(data => {
           console.log('Successful');
           this.tags.push(this.editedTag);
+        });
+    }
+    if (this.action === 'edit'){
+      this.editedTag.id = this.newTagId;
+      this.tagService.editTag(this.editedTag)
+        .subscribe(data => {
+          console.log('Successful');
+          window.location.reload();
         });
     }
   }

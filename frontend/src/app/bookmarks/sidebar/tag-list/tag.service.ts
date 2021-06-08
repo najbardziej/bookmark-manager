@@ -29,6 +29,15 @@ export class TagService {
     );
   }
 
+  editTag(model: Tag): Observable<Tag> {
+    console.log(model);
+    return this.http.put<Tag>(`${this.tagUrl}/${model.id}`, model).pipe(
+      map((response: Tag) =>  {
+        return response;
+      })
+    );
+  }
+
   private handleError(err: HttpErrorResponse) {
     let errorMessage = '';
     if (err.error instanceof ErrorEvent) {
