@@ -1,7 +1,7 @@
 <!--<p>sidebar works!</p>-->
 <div class="header-and-nav bg-primary d-flex flex-row flex-md-column p-3">
   <header class="d-flex order-2 order-md-1">
-    <a href="/bookmarks" class="text-light">
+    <a [routerLink]="['/bookmarks']" class="text-light">
       <span class="material-icons logo-icon align-text-bottom">bookmark_border</span>
       <span class="logo-text">bookmark-manager</span>
     </a>
@@ -13,7 +13,7 @@
     <div class="nav-menu bg-primary d-flex flex-column">
       <ul class="m-0 p-0 list-unstyled">
         <li class="menu-link">
-          <a href="/bookmarks" class="text-light">
+          <a [routerLink]="['/bookmarks']" class="text-light">
             <span class="material-icons align-middle py-1">collections_bookmark</span> All
           </a>
         </li>

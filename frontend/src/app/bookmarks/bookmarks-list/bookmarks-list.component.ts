@@ -37,13 +37,13 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       this.bookmarkService.getBookmarks().subscribe({
         next: bookmarks => {
           this.route.queryParams.subscribe(params => {
+            this.getTags();
+            this.getFolders();
             if (params.category){
-              this.getFolders();
               this.bookmarks = [];
               this.bookmarks = this.prepareBookmark(bookmarks, params.category);
               return;
             }if (params.tag){
-              this.getTags();
               this.bookmarks = [];
               this.bookmarks = this.prepareBookmarkByTag(bookmarks, params.tag);
               return;
@@ -91,8 +91,9 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.bookmarkService.deleteBookmark(this.editedBookmark)
       .subscribe(data => {
         console.log('Successful');
+        this.updateBookmarksList('delete');
       });
-    window.location.reload();
+    this.contentModal.hide();
   }
 
   editBookmark(): void {
@@ -105,13 +106,14 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       this.bookmarkService.editBookmark(this.editedBookmark)
         .subscribe(data => {
           console.log('Successful');
+          this.updateBookmarksList('edit');
         });
     } else {
       this.bookmarkService.addBookmark(this.editedBookmark)
         .subscribe(data => {
           console.log('Successful');
+          this.bookmarks.push(this.editedBookmark);
         });
-      window.location.reload();
     }
     this.contentModal.hide();
   }
@@ -165,7 +167,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     const buttonValue = button.value;
     for (const tagsKey in this.editedBookmark.tags) {
       if (this.editedBookmark.tags[tagsKey].name === buttonValue){
-        this.editedBookmark.tags.splice(Number(tagsKey), 1 + Number(tagsKey));
+        this.editedBookmark.tags.splice(Number(tagsKey), 1);
       }
     }
   }
@@ -197,5 +199,18 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
         },
         error: err => this.errorMessage = err
       });
+  }
+
+  private updateBookmarksList(action: string):void {
+    for(const bookmarkKey in this.bookmarks) {
+      if (this.bookmarks[bookmarkKey].bookmarkId === this.editedBookmark.bookmarkId){
+        if (action === 'delete') {
+          this.bookmarks.splice(Number(bookmarkKey), 1);
+        }
+        if (action === 'edit') {
+          this.bookmarks[bookmarkKey] = this.editedBookmark;
+        }
+      }
+    }
   }
 }
