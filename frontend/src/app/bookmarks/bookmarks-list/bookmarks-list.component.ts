@@ -91,8 +91,9 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     this.bookmarkService.deleteBookmark(this.editedBookmark)
       .subscribe(data => {
         console.log('Successful');
+        this.updateBookmarksList('delete');
       });
-    window.location.reload();
+    this.contentModal.hide();
   }
 
   editBookmark(): void {
@@ -105,13 +106,14 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       this.bookmarkService.editBookmark(this.editedBookmark)
         .subscribe(data => {
           console.log('Successful');
+          this.updateBookmarksList('edit');
         });
     } else {
       this.bookmarkService.addBookmark(this.editedBookmark)
         .subscribe(data => {
           console.log('Successful');
+          this.bookmarks.push(this.editedBookmark);
         });
-      window.location.reload();
     }
     this.contentModal.hide();
   }
@@ -197,5 +199,18 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
         },
         error: err => this.errorMessage = err
       });
+  }
+
+  private updateBookmarksList(action: string):void {
+    for(const bookmarkKey in this.bookmarks) {
+      if (this.bookmarks[bookmarkKey].bookmarkId === this.editedBookmark.bookmarkId){
+        if (action === 'delete') {
+          this.bookmarks.splice(Number(bookmarkKey), 1);
+        }
+        if (action === 'edit') {
+          this.bookmarks[bookmarkKey] = this.editedBookmark;
+        }
+      }
+    }
   }
 }
