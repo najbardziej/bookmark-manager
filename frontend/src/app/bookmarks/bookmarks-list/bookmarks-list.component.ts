@@ -37,13 +37,13 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
       this.bookmarkService.getBookmarks().subscribe({
         next: bookmarks => {
           this.route.queryParams.subscribe(params => {
+            this.getTags();
+            this.getFolders();
             if (params.category){
-              this.getFolders();
               this.bookmarks = [];
               this.bookmarks = this.prepareBookmark(bookmarks, params.category);
               return;
             }if (params.tag){
-              this.getTags();
               this.bookmarks = [];
               this.bookmarks = this.prepareBookmarkByTag(bookmarks, params.tag);
               return;
