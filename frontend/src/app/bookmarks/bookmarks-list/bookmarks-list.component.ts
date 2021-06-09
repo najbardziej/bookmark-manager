@@ -119,9 +119,9 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
   private prepareBookmark(bookmarks: Bookmark[], category: any): Bookmark[] {
     let bookmarksToShow: Bookmark[] = [];
     for (const bookmark of bookmarks) {
-      if (bookmark.category.name === category) {
+      if (bookmark.category?.name === category) {
         bookmarksToShow.push(bookmark); }
-      if (this.subcategoryBelongsToCategory(bookmark.category.id, category)) {
+      if (this.subcategoryBelongsToCategory(bookmark.category?.id, category)) {
         bookmarksToShow.push(bookmark);
       }
     }
