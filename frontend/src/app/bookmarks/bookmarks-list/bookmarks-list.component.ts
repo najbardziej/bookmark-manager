@@ -165,7 +165,7 @@ export class BookmarksListComponent implements OnInit, OnDestroy {
     const buttonValue = button.value;
     for (const tagsKey in this.editedBookmark.tags) {
       if (this.editedBookmark.tags[tagsKey].name === buttonValue){
-        this.editedBookmark.tags.splice(Number(tagsKey), 1 + Number(tagsKey));
+        this.editedBookmark.tags.splice(Number(tagsKey), 1);
       }
     }
   }
